@@ -1,0 +1,55 @@
+{
+  "name": "nodebird-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/www",
+  "scripts": {
+    "start": "tsc && node dist/app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ofnullable/ts-nodebird.git"
+  },
+  "author": "ofnullable <ofnullable@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ofnullable/ts-nodebird/issues"
+  },
+  "homepage": "https://github.com/ofnullable/ts-nodebird#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "helmet": "^3.22.0",
+    "hpp": "^0.2.3",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.1.0",
+    "sequelize": "^5.21.8",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/bluebird": "^3.5.30",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.6",
+    "@types/express-session": "^1.17.0",
+    "@types/helmet": "0.0.46",
+    "@types/hpp": "^0.2.1",
+    "@types/morgan": "^1.9.0",
+    "@types/node": "^13.13.5",
+    "@types/passport": "^1.0.3",
+    "@types/passport-local": "^1.0.33",
+    "@types/validator": "^13.0.0",
+    "nodemon": "^2.0.3",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3"
+  }
+}
