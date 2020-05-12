@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "tsc && node dist/server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc && node dist/server"
   },
   "repository": {
     "type": "git",
