@@ -2,14 +2,11 @@ import * as express from 'express';
 import * as morgan from 'morgan';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
 import * as expressSession from 'express-session';
 import * as hpp from 'hpp';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
 import { sequelize } from './models';
-
-dotenv.config();
 
 const prod = process.env.NODE_ENV === 'production';
 const app = express();
@@ -55,9 +52,4 @@ app.get('/', (req, res) => {
   res.send('Welcome TS-NODEBIRD Server!');
 });
 
-const port = Number(process.env.PORT) || 3030;
-app.listen(port, () => {
-  console.log(
-    `Server running on port: ${port}!`,
-  );
-});
+export default app;
