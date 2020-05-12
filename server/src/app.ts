@@ -15,7 +15,7 @@ sequelize.sync({ force: !prod })
   .then(() => {
     console.log('Success sync database');
   })
-  .catch((e) => {
+  .catch((e: Error) => {
     console.error(e);
   });
 
