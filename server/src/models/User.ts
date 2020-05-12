@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
+import { DbType } from './index';
 import { sequelize } from './sequelize';
-import { dbType } from './index';
 
 class User extends Model {
   public readonly id!: number;
@@ -23,15 +23,15 @@ User.init({
   },
   nickname: {
     type: DataTypes.STRING(20),
+    allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'users',
   tableName: 'users',
-  charset: 'utf8',
-  collate: 'c',
 });
 
-export const associate = (db: dbType) => { };
+export const associateUser = (db: DbType) => {
+};
 
 export default User;
