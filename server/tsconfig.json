@@ -4,5 +4,6 @@
     "lib": ["esnext"],
     "moduleResolution": "node",
     "outDir": "dist"
-  }
+  },
+  "include": ["server.ts","src"]
 }

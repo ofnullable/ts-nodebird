@@ -2,9 +2,9 @@
   "name": "nodebird-server",
   "version": "1.0.0",
   "description": "",
-  "main": "bin/www",
+  "main": "server.ts",
   "scripts": {
-    "start": "tsc && node dist/app",
+    "start": "tsc && node dist/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
