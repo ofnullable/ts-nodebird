@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "tsc && node dist/server"
+    "start": "tsc && node dist/server",
+    "dev": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/ofnullable/ts-nodebird#readme",
   "dependencies": {
+    "aws-sdk": "^2.675.0",
     "bcrypt": "^4.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -26,6 +28,8 @@
     "helmet": "^3.22.0",
     "hpp": "^0.2.3",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.1.0",
@@ -43,6 +47,8 @@
     "@types/helmet": "0.0.46",
     "@types/hpp": "^0.2.1",
     "@types/morgan": "^1.9.0",
+    "@types/multer": "^1.4.3",
+    "@types/multer-s3": "^2.7.7",
     "@types/node": "^13.13.5",
     "@types/passport": "^1.0.3",
     "@types/passport-local": "^1.0.33",
