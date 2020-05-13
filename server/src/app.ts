@@ -8,6 +8,10 @@ import * as helmet from 'helmet';
 import * as passport from 'passport';
 import { sequelize } from './models';
 
+
+import userRouter from './routes/user';
+import postRouter from './routes/post';
+
 const prod = process.env.NODE_ENV === 'production';
 const app = express();
 
@@ -47,6 +51,9 @@ app.use(expressSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/users', userRouter);
+app.use('/posts', postRouter);
 
 app.get('/', (req, res) => {
   res.send('Welcome TS-NODEBIRD Server!');
