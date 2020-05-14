@@ -53,7 +53,7 @@ User.init({
 export const associateUser = (db: DbType) => {
   db.User.hasMany(db.Post, { as: 'posts' });
   db.User.hasMany(db.Comment);
-  db.User.belongsToMany(db.Post, { through: 'like', as: 'liked' });
+  db.User.belongsToMany(db.Post, { through: 'likes', as: 'liked' });
   db.User.belongsToMany(db.User, { through: 'follow', as: 'followers', foreignKey: 'followingId' });
   db.User.belongsToMany(db.User, { through: 'follow', as: 'followings', foreignKey: 'followerId' });
 };

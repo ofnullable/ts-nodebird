@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './sequelize';
-import { DbType } from './index';
 
 class Comment extends Model {
   public readonly id!: number;
@@ -19,9 +18,5 @@ Comment.init({
   tableName: 'comments',
   modelName: 'comments',
 });
-
-export const associateComment = (db: DbType) => {
-
-};
 
 export default Comment;

@@ -1,5 +1,7 @@
 import {
+  BelongsToManyAddAssociationMixin,
   BelongsToManyAddAssociationsMixin,
+  BelongsToManyRemoveAssociationMixin,
   DataTypes,
   HasManyAddAssociationMixin,
   HasManyAddAssociationsMixin,
@@ -9,6 +11,7 @@ import { sequelize } from './sequelize';
 import { DbType } from './index';
 import Hashtag from './Hashtag';
 import Image from './Image';
+import User from './User';
 
 class Post extends Model {
   public readonly id!: number;
@@ -16,9 +19,15 @@ class Post extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public addImage!: HasManyAddAssociationMixin<Image, number>
-  public addImages!: HasManyAddAssociationsMixin<Image, number>
-  public addHashtags!: BelongsToManyAddAssociationsMixin<Hashtag, number>
+  public userId!: number;
+  public retweetId?: number;
+  public readonly retweet?: Post;
+
+  public addImage!: HasManyAddAssociationMixin<Image, number>;
+  public addImages!: HasManyAddAssociationsMixin<Image, number>;
+  public addHashtags!: BelongsToManyAddAssociationsMixin<Hashtag, number>;
+  public addLiker!: BelongsToManyAddAssociationMixin<User, number>;
+  public removeLiker!: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 
 Post.init({
@@ -37,8 +46,8 @@ export const associatePost = (db: DbType) => {
   db.Post.hasMany(db.Comment);
   db.Post.hasMany((db.Image));
   db.Post.belongsTo(db.Post, { as: 'retweet' });
-  db.Post.belongsToMany(db.Hashtag, { through: 'postHashtag' });
-  db.Post.belongsToMany(db.User, { through: 'like', as: 'likers' });
+  db.Post.belongsToMany(db.Hashtag, { through: 'post_hashtags' });
+  db.Post.belongsToMany(db.User, { through: 'likes', as: 'likers' });
 };
 
 export default Post;

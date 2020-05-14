@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './sequelize';
-import { DbType } from './index';
 
 class Hashtag extends Model {
   public readonly id!: number;
@@ -19,9 +18,5 @@ Hashtag.init({
   tableName: 'hashtags',
   modelName: 'hashtags',
 });
-
-export const associateHashtag = (db: DbType) => {
-
-};
 
 export default Hashtag;

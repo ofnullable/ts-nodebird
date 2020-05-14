@@ -1,8 +1,8 @@
 import User, { associateUser } from './User';
 import Post, { associatePost } from './Post';
-import Comment, { associateComment } from './Comment';
-import Hashtag, { associateHashtag } from './Hashtag';
-import Image, { associateImage } from './Image';
+import Comment from './Comment';
+import Hashtag from './Hashtag';
+import Image from './Image';
 
 export * from './sequelize';
 
@@ -18,6 +18,3 @@ export type DbType = typeof db;
 
 associateUser(db);
 associatePost(db);
-associateComment(db);
-associateHashtag(db);
-associateImage(db);

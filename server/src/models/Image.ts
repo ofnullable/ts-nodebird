@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './sequelize';
-import { DbType } from './index';
 
 class Image extends Model {
   public readonly id!: number;
@@ -19,9 +18,5 @@ Image.init({
   tableName: 'images',
   modelName: 'images',
 });
-
-export const associateImage = (db: DbType) => {
-
-};
 
 export default Image;
