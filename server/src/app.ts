@@ -6,16 +6,25 @@ import * as expressSession from 'express-session';
 import * as hpp from 'hpp';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
+
+import passportConfig from './passport';
 import { sequelize } from './models';
+
+import userRouter from './routes/user';
+import postRouter from './routes/post';
+import postsRouter from './routes/posts';
+import hashtagRouter from './routes/hashtag';
 
 const prod = process.env.NODE_ENV === 'production';
 const app = express();
+
+passportConfig();
 
 sequelize.sync({ force: !prod })
   .then(() => {
     console.log('Success sync database');
   })
-  .catch((e) => {
+  .catch((e: Error) => {
     console.error(e);
   });
 
@@ -47,6 +56,11 @@ app.use(expressSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/users', userRouter);
+app.use('/post', postRouter);
+app.use('/posts', postsRouter);
+app.use('/hashtag', hashtagRouter);
 
 app.get('/', (req, res) => {
   res.send('Welcome TS-NODEBIRD Server!');

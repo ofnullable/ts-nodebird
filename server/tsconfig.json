@@ -3,7 +3,8 @@
     "strict": true,
     "lib": ["esnext"],
     "moduleResolution": "node",
-    "outDir": "dist"
+    "outDir": "dist",
+    "typeRoots": ["src/types"]
   },
-  "include": ["server.ts","src"]
+  "include": ["server.ts", "src"]
 }
