@@ -20,7 +20,8 @@ const app = express();
 
 passportConfig();
 
-sequelize.sync({ force: !prod })
+sequelize
+  .sync({ force: !prod })
   .then(() => {
     console.log('Success sync database');
   })
@@ -32,27 +33,31 @@ if (prod) {
   app.use(hpp());
   app.use(helmet);
   app.use(morgan('combined'));
-  app.use(cors({
-    origin: true,
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
 }
 
 app.use('/', express.static('uploads'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(expressSession({
-  resave: false,
-  saveUninitialized: false,
-  secret: process.env.COOKIE_SECRET!,
-  cookie: {
-    httpOnly: true,
-    secure: false,
-    domain: prod ? '.host.com' : undefined,
-  },
-  name: 'nodebird',
-}));
+app.use(
+  expressSession({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET!,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: prod ? '.host.com' : undefined,
+    },
+    name: 'nodebird',
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());

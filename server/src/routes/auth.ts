@@ -24,19 +24,23 @@ router.post('/signin', isNotLogin, (req, res, next) => {
 
         const result = await User.findOne({
           where: { id: user.id },
-          include: [{
-            model: Post,
-            as: 'posts',
-            attributes: ['id'],
-          }, {
-            model: User,
-            as: 'followings',
-            attributes: ['id'],
-          }, {
-            model: User,
-            as: 'followers',
-            attributes: ['id'],
-          }],
+          include: [
+            {
+              model: Post,
+              as: 'posts',
+              attributes: ['id'],
+            },
+            {
+              model: User,
+              as: 'followings',
+              attributes: ['id'],
+            },
+            {
+              model: User,
+              as: 'followers',
+              attributes: ['id'],
+            },
+          ],
           attributes: {
             exclude: ['password'],
           },

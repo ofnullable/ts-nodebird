@@ -30,32 +30,43 @@ class User extends Model {
   public removeFollowing!: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 
-User.init({
-  username: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    unique: true,
+User.init(
+  {
+    username: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    nickname: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
   },
-  password: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
-  },
-  nickname: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-  },
-}, {
-  sequelize,
-  modelName: 'users',
-  tableName: 'users',
-});
+  {
+    sequelize,
+    modelName: 'users',
+    tableName: 'users',
+  }
+);
 
 export const associateUser = (db: DbType) => {
   db.User.hasMany(db.Post, { as: 'posts' });
   db.User.hasMany(db.Comment);
   db.User.belongsToMany(db.Post, { through: 'likes', as: 'liked' });
-  db.User.belongsToMany(db.User, { through: 'follow', as: 'followers', foreignKey: 'followingId' });
-  db.User.belongsToMany(db.User, { through: 'follow', as: 'followings', foreignKey: 'followerId' });
+  db.User.belongsToMany(db.User, {
+    through: 'follow',
+    as: 'followers',
+    foreignKey: 'followingId',
+  });
+  db.User.belongsToMany(db.User, {
+    through: 'follow',
+    as: 'followings',
+    foreignKey: 'followerId',
+  });
 };
 
 export default User;
