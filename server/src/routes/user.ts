@@ -50,19 +50,23 @@ router.get('/:id', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { id: Number(req.params.id) },
-      include: [{
-        model: Post,
-        as: 'posts',
-        attributes: ['id'],
-      }, {
-        model: User,
-        as: 'followings',
-        attributes: ['id'],
-      }, {
-        model: User,
-        as: 'followers',
-        attributes: ['id'],
-      }],
+      include: [
+        {
+          model: Post,
+          as: 'posts',
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'followings',
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'followers',
+          attributes: ['id'],
+        },
+      ],
       attributes: {
         exclude: ['password'],
       },
@@ -182,16 +186,20 @@ router.get('/:id/posts', async (req, res, next) => {
         UserId: Number(req.params.id) || (req.user && req.user.id) || 0,
         RetweetId: null,
       },
-      include: [{
-        model: User,
-        attributes: ['id', 'nickname'],
-      }, {
-        model: Image,
-      }, {
-        model: User,
-        as: 'likers',
-        attributes: ['id'],
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: User,
+          as: 'likers',
+          attributes: ['id'],
+        },
+      ],
     });
 
     return res.json(posts);
@@ -203,11 +211,14 @@ router.get('/:id/posts', async (req, res, next) => {
 
 router.patch('/nickname', isLogin, async (req, res, next) => {
   try {
-    await User.update({
-      nickname: req.body.nickname,
-    }, {
-      where: { id: req.user!.id },
-    });
+    await User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      {
+        where: { id: req.user!.id },
+      }
+    );
 
     return res.send(req.body.nickname);
   } catch (e) {

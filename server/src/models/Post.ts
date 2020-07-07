@@ -30,21 +30,26 @@ class Post extends Model {
   public removeLiker!: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 
-Post.init({
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false,
+Post.init(
+  {
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   },
-}, {
-  sequelize,
-  modelName: 'posts',
-  tableName: 'posts',
-});
+  {
+    sequelize,
+    modelName: 'posts',
+    tableName: 'posts',
+    charset: 'utf8mb4',
+    collate: 'utf8mb4_general_ci',
+  }
+);
 
 export const associatePost = (db: DbType) => {
   db.Post.belongsTo(db.User);
   db.Post.hasMany(db.Comment);
-  db.Post.hasMany((db.Image));
+  db.Post.hasMany(db.Image);
   db.Post.belongsTo(db.Post, { as: 'retweet' });
   db.Post.belongsToMany(db.Hashtag, { through: 'post_hashtags' });
   db.Post.belongsToMany(db.User, { through: 'likes', as: 'likers' });

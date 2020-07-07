@@ -3,7 +3,7 @@ interface DbConfig {
   password: string;
   database: string;
   host: string;
-  dialect: 'postgres' | 'mysql'
+  dialect: 'postgres' | 'mysql';
 }
 
 export default {

@@ -41,9 +41,11 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
     });
 
     if (hashtag) {
-      const promises = hashtag.map((tag) => Hashtag.findOrCreate({
-        where: { name: tag.slice(1).toLowerCase() },
-      }));
+      const promises = hashtag.map((tag) =>
+        Hashtag.findOrCreate({
+          where: { name: tag.slice(1).toLowerCase() },
+        })
+      );
 
       const result = await Promise.all(promises);
       await newPost.addHashtags(result.map((r) => r[0]));
@@ -51,7 +53,9 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
 
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
-        const promises: Bluebird<Image>[] = req.body.image.map((image: string) => Image.create({ src: image }));
+        const promises: Bluebird<Image>[] = req.body.image.map((image: string) =>
+          Image.create({ src: image })
+        );
         const images = await Promise.all(promises);
         await newPost.addImages(images);
       } else {
@@ -62,16 +66,20 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
 
     const fullPost = await Post.findOne({
       where: { id: newPost.id },
-      include: [{
-        model: User,
-        attributes: ['id', 'nickname'],
-      }, {
-        model: Image,
-      }, {
-        model: User,
-        as: 'likers',
-        attributes: ['id'],
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: User,
+          as: 'likers',
+          attributes: ['id'],
+        },
+      ],
     });
 
     return res.json(fullPost);
@@ -91,18 +99,22 @@ router.get('/:id', async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.id },
-      include: [{
-        model: User,
-        attributes: {
-          exclude: ['password'],
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ['password'],
+          },
         },
-      }, {
-        model: Image,
-      }, {
-        model: User,
-        as: 'likers',
-        attributes: ['id'],
-      }],
+        {
+          model: Image,
+        },
+        {
+          model: User,
+          as: 'likers',
+          attributes: ['id'],
+        },
+      ],
     });
 
     res.json(post);
@@ -118,10 +130,12 @@ router.delete('/:id', isLogin, async (req, res, next) => {
 
     const post = await Post.findOne({
       where: { id: postId },
-      include: [{
-        model: User,
-        where: { id: req.user!.id },
-      }],
+      include: [
+        {
+          model: User,
+          where: { id: req.user!.id },
+        },
+      ],
     });
 
     if (!post) {
@@ -144,10 +158,12 @@ router.get('/:id/comments', async (req, res, next) => {
       where: {
         postId: req.params.id,
       },
-      include: [{
-        model: User,
-        attributes: ['id', 'nickname'],
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+      ],
       order: [['createdAt', 'ASC']],
     });
   } catch (e) {
@@ -176,10 +192,12 @@ router.post('/:id/comment', isLogin, async (req, res, next) => {
       where: {
         id: newComment.id,
       },
-      include: [{
-        model: User,
-        attributes: ['id', 'nickname'],
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+      ],
     });
 
     return res.json(comment);
@@ -201,7 +219,6 @@ router.post('/:id/like', isLogin, async (req, res, next) => {
 
     await post.addLiker(req.user!.id);
     return res.json({ userId: req.user!.id });
-
   } catch (e) {
     console.error(e);
     next(e);
@@ -220,7 +237,6 @@ router.delete('/:id/like', isLogin, async (req, res, next) => {
 
     await post.removeLiker(req.user!.id);
     return res.json({ userId: req.user!.id });
-
   } catch (e) {
     console.error(e);
     next(e);
@@ -231,10 +247,12 @@ router.post('/:id/retweet', isLogin, async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.id },
-      include: [{
-        model: Post,
-        as: 'retweet',
-      }],
+      include: [
+        {
+          model: Post,
+          as: 'retweet',
+        },
+      ],
     });
 
     if (!post) {
@@ -265,19 +283,25 @@ router.post('/:id/retweet', isLogin, async (req, res, next) => {
 
     const retweetWithPrevPost = await Post.findOne({
       where: { id: retweet.id },
-      include: [{
-        model: User,
-        attributes: ['id', 'nickname'],
-      }, {
-        model: Post,
-        as: 'retweet',
-        include: [{
+      include: [
+        {
           model: User,
           attributes: ['id', 'nickname'],
-        }, {
-          model: Image,
-        }],
-      }],
+        },
+        {
+          model: Post,
+          as: 'retweet',
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+            {
+              model: Image,
+            },
+          ],
+        },
+      ],
     });
 
     return res.json(retweetWithPrevPost);
