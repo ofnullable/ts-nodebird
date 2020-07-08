@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "nodemon.json"
+  ],
+  "exec": "next",
+  "ext": "ts tsx json"
+}
