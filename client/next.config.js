@@ -1,0 +1,22 @@
+const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({
+  distDir: '.next',
+  webpack(config) {
+    const prod = process.env.NODE_ENV === 'production';
+    const plugins = [...config.plugins, new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/)];
+    if (prod) {
+      plugins.push(new CompressionPlugin());
+    }
+    return {
+      ...config,
+      mode: prod ? 'production' : 'development',
+      devtool: prod ? 'hidden-source-map' : 'inline-source-map',
+      plugins,
+    };
+  },
+});
