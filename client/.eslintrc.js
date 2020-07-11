@@ -19,14 +19,10 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   plugins: ['@typescript-eslint', 'react-hooks'],
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
-      },
-    },
-  },
   rules: {
+    'no-param-reassign': 0,
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
     '@typescript-eslint/ban-types': 0,
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
