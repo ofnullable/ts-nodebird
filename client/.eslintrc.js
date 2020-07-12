@@ -12,19 +12,34 @@ module.exports = {
     node: true,
     es6: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   extends: [
-    'airbnb-base',
+    'airbnb',
+    'eslint:recommended',
     'prettier/@typescript-eslint',
+    'plugin:react/recommended',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
   plugins: ['@typescript-eslint', 'react-hooks'],
   rules: {
+    'no-nested-ternary': 0,
+    'react/react-in-jsx-scope': 0,
+    'react/prefer-stateless-function': 0,
+    'react/jsx-filename-extension': 0,
+    'react/jsx-one-expression-per-line': 0,
     'no-param-reassign': 0,
     'import/extensions': 0,
     'import/no-unresolved': 0,
     '@typescript-eslint/ban-types': 0,
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
+  },
+  globals: {
+    React: 'writable',
   },
 };

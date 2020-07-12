@@ -7,4 +7,8 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
+  rules: {
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
+  },
 };
