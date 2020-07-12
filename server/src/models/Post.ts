@@ -15,18 +15,27 @@ import User from './User';
 
 class Post extends Model {
   public readonly id!: number;
+
   public content!: string;
+
   public readonly createdAt!: Date;
+
   public readonly updatedAt!: Date;
 
   public userId!: number;
+
   public retweetId?: number;
+
   public readonly retweet?: Post;
 
   public addImage!: HasManyAddAssociationMixin<Image, number>;
+
   public addImages!: HasManyAddAssociationsMixin<Image, number>;
+
   public addHashtags!: BelongsToManyAddAssociationsMixin<Hashtag, number>;
+
   public addLiker!: BelongsToManyAddAssociationMixin<User, number>;
+
   public removeLiker!: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 

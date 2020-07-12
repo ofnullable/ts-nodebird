@@ -4,8 +4,11 @@ import { DbType } from './index';
 
 class Image extends Model {
   public readonly id!: number;
+
   public src!: string;
+
   public readonly createdAt!: Date;
+
   public readonly updatedAt!: Date;
 }
 

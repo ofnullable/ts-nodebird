@@ -4,8 +4,11 @@ import { DbType } from './index';
 
 class Comment extends Model {
   public readonly id!: number;
+
   public content!: string;
+
   public readonly createdAt!: Date;
+
   public readonly updatedAt!: Date;
 }
 

@@ -12,21 +12,33 @@ import Post from './Post';
 
 class User extends Model {
   public readonly id!: number;
+
   public username!: string;
+
   public password!: string;
+
   public nickname!: string;
+
   public readonly createdAt!: Date;
+
   public readonly updatedAt!: Date;
 
   public readonly posts?: Post[];
+
   public readonly followers?: User[];
+
   public readonly followings?: User[];
 
   public getPosts!: HasManyGetAssociationsMixin<Post>;
+
   public addFollowings!: BelongsToManyAddAssociationMixin<User, number>;
+
   public getFollowers!: BelongsToManyGetAssociationsMixin<User>;
+
   public getFollowings!: BelongsToManyGetAssociationsMixin<User>;
+
   public removeFollower!: BelongsToManyRemoveAssociationMixin<User, number>;
+
   public removeFollowing!: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 

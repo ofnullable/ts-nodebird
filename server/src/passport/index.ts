@@ -2,7 +2,7 @@ import * as passport from 'passport';
 import local from './local';
 import User from '../models/User';
 
-export default () => {
+export default (): void => {
   // 로그인 시
   passport.serializeUser<User, number>((user, done) => {
     done(null, user.id);
