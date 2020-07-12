@@ -21,6 +21,7 @@ class AppDocument extends Document<{ helmet: HelmetData }> {
     return (
       <html {...htmlAttrs} lang="ko">
         <head>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css" />
           {this.props.styles}
           {Object.values(helmet).map((el) => el.toComponent())}
         </head>
