@@ -1,6 +1,6 @@
 import { createReducer } from 'typesafe-actions';
 import produce from 'immer';
-import { users, UsersAction } from '../actions/users';
+import { userActions, UsersAction } from '../actions/users';
 import { User } from '../interfaces';
 
 export interface UsersState {
@@ -53,13 +53,24 @@ const initialState: UsersState = {
   },
 };
 
-export default createReducer<UsersState, UsersAction>(initialState, {
-  [users.SIGN_UP.REQUEST]: (state) =>
+export default createReducer<UsersState, UsersAction>(initialState)
+  .handleAction(userActions.join.request, (state) =>
     produce(state, (draft) => {
       draft.join = {
         complete: false,
         loading: true,
         error: '',
       };
-    }),
-});
+      return draft;
+    })
+  )
+  .handleAction(userActions.join.success, (state, action) =>
+    produce(state, (draft) => {
+      draft.auth.info = action.payload;
+      draft.auth.loading = false;
+      draft.join.complete = true;
+      draft.join.loading = false;
+      return draft;
+    })
+  )
+  .handleAction(userActions.signIn.request, (state, action) => produce(state, (draft) => {}));

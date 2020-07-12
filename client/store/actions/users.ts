@@ -1,9 +1,9 @@
 import { createAction, ActionType, createAsyncAction } from 'typesafe-actions';
-import { User, SignInParams, LoadUserParams } from '../interfaces';
+import { User, SignInParams, LoadUserParams, JoinParams } from '../interfaces';
 import { asyncActionCreator } from '../../utils/redux';
 
 export const users = {
-  SIGN_UP: asyncActionCreator('users/SIGN_UP'),
+  JOIN: asyncActionCreator('users/JOIN'),
   SIGN_IN: asyncActionCreator('users/SIGN_IN'),
   LOAD_USER: asyncActionCreator('users/LOAD_USER'),
   SIGN_OUT: asyncActionCreator('users/SIGN_OUT'),
@@ -30,7 +30,7 @@ export const userActions = {
     string
   >(),
 
-  signUp: createAsyncAction(users.SIGN_UP.REQUEST, users.SIGN_UP.SUCCESS, users.SIGN_UP.FAILURE)<User, User, string>(),
+  join: createAsyncAction(users.JOIN.REQUEST, users.JOIN.SUCCESS, users.JOIN.FAILURE)<JoinParams, User, string>(),
 
   loadUser: createAsyncAction(users.LOAD_USER.REQUEST, users.LOAD_USER.SUCCESS, users.LOAD_USER.FAILURE)<
     LoadUserParams,

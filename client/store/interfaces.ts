@@ -7,7 +7,7 @@ export interface SignInParams {
   password: string;
 }
 
-export interface SignUpParams {
+export interface JoinParams {
   email: string;
   name: string;
   password: string;
