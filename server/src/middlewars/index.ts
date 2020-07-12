@@ -1,13 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
+import { RequestHandler } from 'express';
 
-export const isLogin = (req: Request, res: Response, next: NextFunction) => {
+export const isLogin: RequestHandler = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
   res.status(401).send('로그인이 필요합니다.');
 };
 
-export const isNotLogin = (req: Request, res: Response, next: NextFunction) => {
+export const isNotLogin: RequestHandler = (req, res, next) => {
   if (!req.isAuthenticated()) {
     return next();
   }

@@ -1,6 +1,6 @@
 import * as express from 'express';
-import { isLogin, isNotLogin } from '../middlewars';
 import * as passport from 'passport';
+import { isLogin, isNotLogin } from '../middlewars';
 import User from '../models/User';
 import Post from '../models/Post';
 
