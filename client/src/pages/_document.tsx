@@ -1,11 +1,15 @@
 import Helmet, { HelmetData } from 'react-helmet';
-import Document, { Main, NextScript, DocumentContext } from 'next/document';
+import Document, { Main, NextScript, DocumentContext, Html } from 'next/document';
 
 class AppDocument extends Document<{ helmet: HelmetData }> {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
 
-    ctx.renderPage = () => originalRenderPage();
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => App,
+        enhanceComponent: (Component) => Component,
+      });
     const initialProps = await Document.getInitialProps(ctx);
     return {
       ...initialProps,
@@ -19,9 +23,10 @@ class AppDocument extends Document<{ helmet: HelmetData }> {
     const bodyAttrs = bodyAttributes.toComponent();
 
     return (
-      <html {...htmlAttrs} lang="ko">
+      <Html {...htmlAttrs}>
         <head>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css" />
+          <title>NODEBIRD</title>
           {this.props.styles}
           {Object.values(helmet).map((el) => el.toComponent())}
         </head>
@@ -29,7 +34,7 @@ class AppDocument extends Document<{ helmet: HelmetData }> {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

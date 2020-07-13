@@ -6,20 +6,20 @@ import Post from '../models/Post';
 
 const router = express.Router();
 
-router.post('/signin', isNotLogin, (req, res, next) => {
+router.post('/sign-in', isNotLogin, (req, res, next) => {
   passport.authenticate('local', (err: Error, user: User, info: { message: string }) => {
     if (err) {
       console.error(err);
       return next(err);
     }
-    if (info.message) {
+    if (info && info.message) {
       console.error(info.message);
       return res.status(400).send(info.message);
     }
-    return req.login(user, async (err: Error) => {
+    return req.login(user, async (error: Error) => {
       try {
-        if (err) {
-          return next(err);
+        if (error) {
+          return next(error);
         }
 
         const result = await User.findOne({
@@ -55,9 +55,11 @@ router.post('/signin', isNotLogin, (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/signout', isLogin, (req, res) => {
+router.post('/sign-out', isLogin, (req, res) => {
   req.logout();
   req.session!.destroy(() => {
     res.sendStatus(204);
   });
 });
+
+export default router;

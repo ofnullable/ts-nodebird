@@ -1,5 +1,12 @@
 export interface User {
-  id: number;
+  id: 1;
+  email: string;
+  nickname: string;
+  createdAt: Date;
+  updatedAt: Date;
+  posts: unknown[];
+  followings: unknown[];
+  followers: unknown[];
 }
 
 export interface SignInParams {
@@ -9,12 +16,12 @@ export interface SignInParams {
 
 export interface JoinParams {
   email: string;
-  name: string;
+  nickname: string;
   password: string;
 }
 
 export interface LoadUserParams {
-  id: number;
+  id?: number;
 }
 
 export interface Post {

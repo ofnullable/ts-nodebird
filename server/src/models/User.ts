@@ -13,7 +13,7 @@ import Post from './Post';
 class User extends Model {
   public readonly id!: number;
 
-  public username!: string;
+  public email!: string;
 
   public password!: string;
 
@@ -44,7 +44,7 @@ class User extends Model {
 
 User.init(
   {
-    username: {
+    email: {
       type: DataTypes.STRING(20),
       allowNull: false,
       unique: true,

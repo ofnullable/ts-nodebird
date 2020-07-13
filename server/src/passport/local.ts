@@ -8,12 +8,12 @@ export default (): void => {
     'local',
     new Strategy(
       {
-        usernameField: 'username',
+        usernameField: 'email',
         passwordField: 'password',
       },
-      async (username, password, done) => {
+      async (email, password, done) => {
         try {
-          const user = await User.findOne({ where: { username } });
+          const user = await User.findOne({ where: { email } });
 
           if (!user) {
             return done(null, false, { message: '존재하지 않는 유저입니다.' });

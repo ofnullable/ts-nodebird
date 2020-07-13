@@ -33,7 +33,7 @@ export const userActions = {
   join: createAsyncAction(users.JOIN.REQUEST, users.JOIN.SUCCESS, users.JOIN.FAILURE)<JoinParams, User, string>(),
 
   loadUser: createAsyncAction(users.LOAD_USER.REQUEST, users.LOAD_USER.SUCCESS, users.LOAD_USER.FAILURE)<
-    LoadUserParams,
+    number | undefined,
     User,
     string
   >(),

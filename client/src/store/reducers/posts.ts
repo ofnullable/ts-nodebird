@@ -27,7 +27,7 @@ export interface PostsState {
   };
 }
 
-const initialState: PostsState = {
+export const initialState: PostsState = {
   mainPosts: {
     data: null,
     loading: false,

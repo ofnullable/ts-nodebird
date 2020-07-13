@@ -10,6 +10,7 @@ import * as passport from 'passport';
 import passportConfig from './passport';
 import { sequelize } from './models';
 
+import authRouter from './routes/auth';
 import userRouter from './routes/user';
 import postRouter from './routes/post';
 import postsRouter from './routes/posts';
@@ -31,8 +32,16 @@ sequelize
 
 if (prod) {
   app.use(hpp());
-  app.use(helmet);
+  app.use(helmet());
   app.use(morgan('combined'));
+  app.use(
+    cors({
+      origin: /nodebird\.com$/,
+      credentials: true,
+    })
+  );
+} else {
+  app.use(morgan('dev'));
   app.use(
     cors({
       origin: true,
@@ -62,6 +71,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);
