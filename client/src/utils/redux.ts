@@ -7,8 +7,7 @@ type AsyncActions = {
 };
 
 export const asyncActionCreator = (actionName: string): AsyncActions => {
-  const asyncTypeAction: string[] = ['_REQUEST', '_SUCCESS', '_FAILURE'];
-
+  const asyncTypeAction = ['_REQUEST', '_SUCCESS', '_FAILURE'];
   return {
     REQUEST: actionName + asyncTypeAction[0],
     SUCCESS: actionName + asyncTypeAction[1],

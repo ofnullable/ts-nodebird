@@ -19,7 +19,10 @@ function SignUp() {
   const { auth, join } = useSelector((state: AppState) => state.user);
   const dispatch = useDispatch();
 
-  if (auth.info) return null;
+  if (auth.info) {
+    Router.push('/');
+    return null;
+  }
 
   useEffect(() => {
     if (join.complete) {

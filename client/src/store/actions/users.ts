@@ -1,5 +1,5 @@
-import { createAction, ActionType, createAsyncAction } from 'typesafe-actions';
-import { User, SignInParams, LoadUserParams, JoinParams } from '../interfaces';
+import { createAction, createAsyncAction } from 'typesafe-actions';
+import { JoinParams, SignInParams, User } from '../interfaces';
 import { asyncActionCreator } from '../../utils/redux';
 
 export const users = {
@@ -73,5 +73,3 @@ export const userActions = {
   addPost: createAction(users.ADD_POST)(),
   removePost: createAction(users.REMOVE_POST)(),
 };
-
-export type UsersAction = ActionType<typeof userActions>;

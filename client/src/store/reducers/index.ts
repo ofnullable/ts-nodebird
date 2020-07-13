@@ -13,7 +13,7 @@ const combinedReducer = combineReducers({ user, post });
 const rootReducer = (state: AppState = { user: usersState, post: postsState }, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE: {
-      console.log('HYDRATE payload:', action.payload);
+      console.log('HYDRATED state:', action.payload);
       return {
         ...state, // use previous state
         ...action.payload, // apply delta from hydration

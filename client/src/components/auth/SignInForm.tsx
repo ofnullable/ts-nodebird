@@ -48,7 +48,7 @@ function SignInForm() {
           Sign-in
         </Button>
         <AppLink href="/sign-up">
-          <Button htmlType="button">Sign-Up</Button>
+          <Button htmlType="button">Sign-up</Button>
         </AppLink>
       </div>
     </Form>
