@@ -1,15 +1,17 @@
-import { Menu, Input, Row, Col } from 'antd';
+import { Col, Input, Menu, Row } from 'antd';
 import { useSelector } from 'react-redux';
-import Link from 'next/link';
 import Router from 'next/router';
 import { AppState } from '../store/reducers';
+import SignInForm from './auth/SignInForm';
+import AppLink from './common/AppLink';
+import SimpleProfile from './auth/SimpleProfile';
 
 interface Props {
   children: React.ReactNode;
 }
 
 function AppLayout({ children }: Props) {
-  const { auth } = useSelector((state: AppState) => state.user);
+  const { info } = useSelector((state: AppState) => state.user.auth);
 
   const onSearch = (value: string) => {
     Router.push({ pathname: '/hashtag', query: { tag: value } }, `/hashtag/${value}`);
@@ -19,23 +21,19 @@ function AppLayout({ children }: Props) {
     <div>
       <Menu mode="horizontal">
         <Menu.Item key="home">
-          <Link href="/">
-            <a>NodeBird</a>
-          </Link>
+          <AppLink href="/">NodeBird</AppLink>
         </Menu.Item>
         <Menu.Item key="profile">
-          <Link href="/profile">
-            <a>Profile</a>
-          </Link>
+          <AppLink href="/profile">Profile</AppLink>
         </Menu.Item>
-        <Menu.Item key="mail">
+        <Menu.Item key="search">
           <Input.Search enterButton style={{ verticalAlign: 'middle' }} onSearch={onSearch} />
         </Menu.Item>
       </Menu>
       <Row gutter={16} style={{ margin: '10px' }}>
         <Col xs={0} md={0} lg={3} />
         <Col xs={24} md={6} lg={4}>
-          {/* {auth ? <UserProfile /> : <SignInForm />} */}
+          {info ? <SimpleProfile /> : <SignInForm />}
         </Col>
         <Col xs={24} md={12} lg={10}>
           {children}

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "lib": ["esnext"],
+    "target": "ESNext",
     "moduleResolution": "node",
     "outDir": "dist",
     "typeRoots": ["src/types"]

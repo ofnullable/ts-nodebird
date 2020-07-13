@@ -14,26 +14,28 @@ router.get('/', isLogin, (req, res) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const { username, password, nickname } = req.body;
+  const { email, password, nickname } = req.body;
 
   try {
     const exUser = await User.findOne({
       where: {
-        username,
+        email,
       },
     });
     if (exUser) {
-      return res.status(409).send('이미 사용중인 사용자 이름입니다.');
+      res.status(409).send('이미 사용중인 사용자 이름입니다.');
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 15);
     const newUser = await User.create({
-      username,
+      email,
       nickname,
       password: hashedPassword,
     });
 
-    return res.status(201).json(newUser);
+    res.status(201).json(newUser);
+    return;
   } catch (e) {
     console.error(e);
     next(e);
@@ -73,7 +75,8 @@ router.get('/:id', async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(404).send('존재하지 않는 회원입니다.');
+      res.status(404).send('존재하지 않는 회원입니다.');
+      return;
     }
 
     const jsonUser = user.toJSON() as IUser;
@@ -81,7 +84,8 @@ router.get('/:id', async (req, res, next) => {
     jsonUser.followingCount = jsonUser.followings!.length;
     jsonUser.followerCount = jsonUser.followers!.length;
 
-    return res.json(jsonUser);
+    res.json(jsonUser);
+    return;
   } catch (e) {
     console.error(e);
     next(e);
