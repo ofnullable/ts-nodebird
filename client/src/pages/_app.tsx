@@ -14,12 +14,11 @@ const NodeBird = ({ Component, pageProps }: AppProps) => {
 };
 
 NodeBird.getInitialProps = async (context: AppContext) => {
-  console.log('app get initial props');
+  console.log('App get initial props');
   const { ctx } = context;
   const state = ctx.store.getState();
   const cookie = ctx.req ? ctx.req.headers.cookie : '';
 
-  api.defaults.headers.Cookie = '';
   if (ctx.req && cookie) {
     api.defaults.headers.Cookie = cookie;
   }

@@ -10,6 +10,11 @@ interface Props {
   children: React.ReactNode;
 }
 
+// For Menu Component rc-menu props..
+// ref: https://github.com/ant-design/ant-design/issues/17551
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomMenu = Menu as any;
+
 function AppLayout({ children }: Props) {
   const { info } = useSelector((state: AppState) => state.user.auth);
 
@@ -19,7 +24,7 @@ function AppLayout({ children }: Props) {
 
   return (
     <div>
-      <Menu mode="horizontal">
+      <CustomMenu mode="horizontal">
         <Menu.Item key="home">
           <AppLink href="/">NodeBird</AppLink>
         </Menu.Item>
@@ -29,21 +34,21 @@ function AppLayout({ children }: Props) {
         <Menu.Item key="search">
           <Input.Search enterButton style={{ verticalAlign: 'middle' }} onSearch={onSearch} />
         </Menu.Item>
-      </Menu>
+      </CustomMenu>
       <Row gutter={16} style={{ margin: '10px' }}>
-        <Col xs={0} md={0} lg={3} />
-        <Col xs={24} md={6} lg={4}>
+        <Col xs={0} md={0} lg={2} />
+        <Col xs={24} md={6} lg={5}>
           {info ? <SimpleProfile /> : <SignInForm />}
         </Col>
         <Col xs={24} md={12} lg={10}>
           {children}
         </Col>
-        <Col xs={24} md={6} lg={4}>
+        <Col xs={24} md={6} lg={5}>
           <a href="https://github.com/ofnullable" target="_blank" rel="noreferrer noopener">
             Github
           </a>
         </Col>
-        <Col xs={0} md={0} lg={3} />
+        <Col xs={0} md={0} lg={2} />
       </Row>
     </div>
   );
