@@ -27,7 +27,6 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'react-hooks'],
   rules: {
-    'no-nested-ternary': 0,
     'no-param-reassign': 0,
     'import/extensions': 0,
     'import/no-unresolved': 0,

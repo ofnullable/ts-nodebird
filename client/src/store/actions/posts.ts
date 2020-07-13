@@ -1,5 +1,5 @@
-import { createAction, ActionType, createAsyncAction } from 'typesafe-actions';
-import { User, SignInParams, LoadUserParams } from '../interfaces';
+import { createAsyncAction } from 'typesafe-actions';
+import { Post } from '../interfaces';
 import { asyncActionCreator } from '../../utils/redux';
 
 export const posts = {
@@ -15,8 +15,7 @@ export const posts = {
   ADD_COMMENT: asyncActionCreator('posts/ADD_COMMENT'),
   RETWEET: asyncActionCreator('posts/RETWEET'),
   REMOVE_POST: asyncActionCreator('posts/REMOVE_POST'),
-
-  REMOVE_IMAGE: 'REMOVE_IMAGE',
+  REMOVE_IMAGE: asyncActionCreator('posts/REMOVE_IMAGE'),
 };
 
 export const postActions = {
@@ -24,7 +23,7 @@ export const postActions = {
     posts.LOAD_MAIN_POSTS.REQUEST,
     posts.LOAD_MAIN_POSTS.SUCCESS,
     posts.LOAD_MAIN_POSTS.FAILURE
-  )<SignInParams, User, string>(),
+  )<void, Post[], string>(),
 
   loadHashtagPosts: createAsyncAction(
     posts.LOAD_HASHTAG_POSTS.REQUEST,
@@ -36,7 +35,7 @@ export const postActions = {
     posts.LOAD_USER_POSTS.REQUEST,
     posts.LOAD_USER_POSTS.SUCCESS,
     posts.LOAD_USER_POSTS.FAILURE
-  )<User, User, string>(),
+  )<Post[], Post[], string>(),
 
   loadPost: createAsyncAction(posts.LOAD_POST.REQUEST, posts.LOAD_POST.SUCCESS, posts.LOAD_POST.FAILURE)<
     void,
@@ -48,11 +47,11 @@ export const postActions = {
     posts.UPLOAD_IMAGES.REQUEST,
     posts.UPLOAD_IMAGES.SUCCESS,
     posts.UPLOAD_IMAGES.FAILURE
-  )<LoadUserParams, User, string>(),
+  )<FormData, string[], string>(),
 
   addPost: createAsyncAction(posts.ADD_POST.REQUEST, posts.ADD_POST.SUCCESS, posts.ADD_POST.FAILURE)<
-    void,
-    void,
+    FormData,
+    Post,
     string
   >(),
 
@@ -88,7 +87,9 @@ export const postActions = {
     string
   >(),
 
-  removeImage: createAction(posts.REMOVE_IMAGE)(),
+  removeImage: createAsyncAction(posts.REMOVE_IMAGE.REQUEST, posts.REMOVE_IMAGE.SUCCESS, posts.REMOVE_IMAGE.FAILURE)<
+    string,
+    { path: string },
+    string
+  >(),
 };
-
-export type PostsAction = ActionType<typeof postActions>;
