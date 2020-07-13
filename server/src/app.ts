@@ -50,7 +50,7 @@ if (prod) {
   );
 }
 
-app.use('/', express.static('uploads'));
+app.use('/public', express.static('public/uploads'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

@@ -1,10 +1,8 @@
-import * as path from 'path';
 import * as express from 'express';
 import * as multer from 'multer';
-import * as multerS3 from 'multer-s3';
-import * as AWS from 'aws-sdk';
-import * as Bluebird from 'bluebird';
-
+import * as uuid from 'uuid';
+import * as fs from 'fs';
+import { extname, resolve } from 'path';
 import { isLogin } from '../middlewars';
 import Post from '../models/Post';
 import Hashtag from '../models/Hashtag';
@@ -12,18 +10,13 @@ import Image from '../models/Image';
 import User from '../models/User';
 import Comment from '../models/Comment';
 
-AWS.config.update({
-  region: 'ap-northeast-2',
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-});
-
 const upload = multer({
-  storage: multerS3({
-    s3: new AWS.S3(),
-    bucket: 'ts-nodebird',
-    key(req, file, cb) {
-      cb(null, `original/${+new Date()}${path.basename(file.originalname)}`);
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, 'public/uploads/');
+    },
+    filename(req, file, cb) {
+      cb(null, uuid.v4() + extname(file.originalname));
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 },
@@ -53,9 +46,7 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
 
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
-        const promises: Bluebird<Image>[] = req.body.image.map((image: string) =>
-          Image.create({ src: image })
-        );
+        const promises: Promise<Image>[] = req.body.image.map((image: string) => Image.create({ src: image }));
         const images = await Promise.all(promises);
         await newPost.addImages(images);
       } else {
@@ -82,7 +73,7 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
       ],
     });
 
-    return res.json(fullPost);
+    res.json(fullPost);
   } catch (e) {
     console.error(e);
     next(e);
@@ -92,7 +83,18 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
 router.post('/images', isLogin, upload.array('image'), (req, res) => {
   console.log(req.files);
 
-  res.json((req.files as Express.MulterS3.File[]).map((v) => v.location));
+  res.json((req.files as Express.Multer.File[]).map((v) => `public/${v.filename}`));
+});
+
+router.delete('/image/:filename', isLogin, (req, res, next) => {
+  const uploadedPath = resolve(__dirname, '../../public/uploads');
+  fs.unlink(`${uploadedPath}/${req.params.filename}`, (err) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.status(202).json({ path: `public/${req.params.filename}` });
+  });
 });
 
 router.get('/:id', async (req, res, next) => {
@@ -139,7 +141,8 @@ router.delete('/:id', isLogin, async (req, res, next) => {
     });
 
     if (!post) {
-      return res.status(404).send('존재하지 않는 트윗입니다.');
+      res.status(404).send('존재하지 않는 트윗입니다.');
+      return;
     }
 
     await Post.destroy({ where: { id: postId } });
@@ -179,7 +182,8 @@ router.post('/:id/comment', isLogin, async (req, res, next) => {
     });
 
     if (!post) {
-      return res.status(404).send('존재하지 않는 트윗입니다.');
+      res.status(404).send('존재하지 않는 트윗입니다.');
+      return;
     }
 
     const newComment = await Comment.create({
@@ -200,7 +204,7 @@ router.post('/:id/comment', isLogin, async (req, res, next) => {
       ],
     });
 
-    return res.json(comment);
+    res.json(comment);
   } catch (e) {
     console.error(e);
     next(e);
@@ -214,11 +218,12 @@ router.post('/:id/like', isLogin, async (req, res, next) => {
     });
 
     if (!post) {
-      return res.status(404).send('존재하지 않는 트윗입니다.');
+      res.status(404).send('존재하지 않는 트윗입니다.');
+      return;
     }
 
     await post.addLiker(req.user!.id);
-    return res.json({ userId: req.user!.id });
+    res.json({ userId: req.user!.id });
   } catch (e) {
     console.error(e);
     next(e);
@@ -232,11 +237,12 @@ router.delete('/:id/like', isLogin, async (req, res, next) => {
     });
 
     if (!post) {
-      return res.status(404).send('존재하지 않는 트윗입니다.');
+      res.status(404).send('존재하지 않는 트윗입니다.');
+      return;
     }
 
     await post.removeLiker(req.user!.id);
-    return res.json({ userId: req.user!.id });
+    res.json({ userId: req.user!.id });
   } catch (e) {
     console.error(e);
     next(e);
@@ -256,10 +262,12 @@ router.post('/:id/retweet', isLogin, async (req, res, next) => {
     });
 
     if (!post) {
-      return res.status(404).send('존재하지 않는 트윗입니다.');
+      res.status(404).send('존재하지 않는 트윗입니다.');
+      return;
     }
     if (req.user!.id === post.userId || (post.retweet && post.retweet.userId === req.user!.id)) {
-      return res.status(400).send('자신의 게시글은 리트윗할 수 없습니다.');
+      res.status(400).send('자신의 게시글은 리트윗할 수 없습니다.');
+      return;
     }
 
     const retweetTargetId = post.retweetId || post.id;
