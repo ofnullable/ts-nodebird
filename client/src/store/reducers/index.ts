@@ -8,20 +8,17 @@ export interface AppState {
   post: PostsState;
 }
 
-const combinedReducer = combineReducers({ user, post });
-
 const rootReducer = (state: AppState = { user: usersState, post: postsState }, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE: {
       console.log('HYDRATED state:', action.payload);
-      return {
-        ...state, // use previous state
-        ...action.payload, // apply delta from hydration
-      };
+      return action.payload;
     }
 
-    default:
+    default: {
+      const combinedReducer = combineReducers({ user, post });
       return combinedReducer(state, action);
+    }
   }
 };
 

@@ -23,19 +23,19 @@ export const postActions = {
     posts.LOAD_MAIN_POSTS.REQUEST,
     posts.LOAD_MAIN_POSTS.SUCCESS,
     posts.LOAD_MAIN_POSTS.FAILURE
-  )<void, Post[], string>(),
+  )<{ lastId?: number }, Post[], string>(),
 
   loadHashtagPosts: createAsyncAction(
     posts.LOAD_HASHTAG_POSTS.REQUEST,
     posts.LOAD_HASHTAG_POSTS.SUCCESS,
     posts.LOAD_HASHTAG_POSTS.FAILURE
-  )<void, void, string>(),
+  )<{ lastId?: number }, Post[], string>(),
 
   loadUserPost: createAsyncAction(
     posts.LOAD_USER_POSTS.REQUEST,
     posts.LOAD_USER_POSTS.SUCCESS,
     posts.LOAD_USER_POSTS.FAILURE
-  )<Post[], Post[], string>(),
+  )<{ lastId?: number }, Post[], string>(),
 
   loadPost: createAsyncAction(posts.LOAD_POST.REQUEST, posts.LOAD_POST.SUCCESS, posts.LOAD_POST.FAILURE)<
     void,

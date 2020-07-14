@@ -61,61 +61,52 @@ export default createReducer(initialState)
         loading: true,
         error: '',
       };
-      return draft;
     })
   )
   .handleAction(userActions.join.success, (state) =>
     produce(state, (draft) => {
       draft.join.complete = true;
       draft.join.loading = false;
-      return draft;
     })
   )
   .handleAction(userActions.join.failure, (state, action) =>
     produce(state, (draft) => {
       draft.join.error = action.payload;
       draft.join.loading = false;
-      return draft;
     })
   )
   .handleAction(userActions.signIn.request, (state) =>
     produce(state, (draft) => {
       draft.auth.error = '';
       draft.auth.loading = true;
-      return draft;
     })
   )
   .handleAction(userActions.signIn.success, (state, action) =>
     produce(state, (draft) => {
       draft.auth.info = action.payload;
       draft.auth.loading = false;
-      return draft;
     })
   )
   .handleAction(userActions.signIn.failure, (state, action) =>
     produce(state, (draft) => {
       draft.auth.error = action.payload;
       draft.auth.loading = false;
-      return draft;
     })
   )
   .handleAction(userActions.loadUser.request, (state) =>
     produce(state, (draft) => {
       draft.auth.error = '';
       draft.auth.loading = true;
-      return draft;
     })
   )
   .handleAction(userActions.loadUser.success, (state, action) =>
     produce(state, (draft) => {
       draft.auth.info = action.payload;
       draft.auth.loading = false;
-      return draft;
     })
   )
   .handleAction(userActions.loadUser.failure, (state) =>
     produce(state, (draft) => {
       draft.auth.loading = false;
-      return draft;
     })
   );
