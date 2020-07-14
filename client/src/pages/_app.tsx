@@ -21,10 +21,10 @@ NodeBird.getInitialProps = async (context: AppContext) => {
 
   if (ctx.req && cookie) {
     api.defaults.headers.Cookie = cookie;
-  }
 
-  if (!state.user.auth.info) {
-    ctx.store.dispatch(userActions.loadUser.request(undefined));
+    if (!state.user.auth.info) {
+      ctx.store.dispatch(userActions.loadUser.request(undefined));
+    }
   }
 
   const appProps = await App.getInitialProps(context);
