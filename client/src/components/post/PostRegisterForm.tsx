@@ -44,7 +44,7 @@ function PostRegisterForm() {
 
   const handleRemoveImage = useCallback(
     (idx: number) => () => {
-      if (uploaded.data?.[idx]) {
+      if (uploaded.data[idx]) {
         const filename = uploaded.data[idx].replace('public/', '');
         dispatch(postActions.removeImage.request(filename));
       }
@@ -83,7 +83,7 @@ function PostRegisterForm() {
         </Button>
       </div>
       <div>
-        {uploaded.data?.map((path, i) => (
+        {uploaded.data.map((path, i) => (
           <div key={path} css={[uploadedImageStyle]}>
             <img src={`${serverAddress}/${path}`} alt={path} />
             <div>
