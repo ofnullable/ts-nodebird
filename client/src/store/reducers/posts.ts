@@ -26,7 +26,7 @@ export interface PostsState {
     error: string;
   };
   uploaded: {
-    data: string[] | null;
+    data: string[];
     loading: boolean;
     error: string;
   };
@@ -60,7 +60,7 @@ export const initialState: PostsState = {
     error: '',
   },
   uploaded: {
-    data: null,
+    data: [],
     loading: false,
     error: '',
   },
@@ -72,52 +72,43 @@ export const initialState: PostsState = {
 };
 
 export default createReducer(initialState)
-  .handleAction(postActions.uploadImages.request, (state) => ({
-    ...state,
-    uploaded: {
-      ...state.uploaded,
-      loading: true,
-      error: '',
-    },
-  }))
-  .handleAction(postActions.uploadImages.success, (state, action) => ({
-    ...state,
-    uploaded: {
-      ...state.uploaded,
-      data: action.payload,
-      loading: false,
-    },
-  }))
-  .handleAction(postActions.uploadImages.failure, (state, action) => ({
-    ...state,
-    uploaded: {
-      ...state.uploaded,
-      error: action.payload,
-      loading: false,
-    },
-  }))
+  .handleAction(postActions.uploadImages.request, (state) =>
+    produce(state, (draft) => {
+      draft.uploaded.loading = true;
+      draft.uploaded.error = '';
+    })
+  )
+  .handleAction(postActions.uploadImages.success, (state, action) =>
+    produce(state, (draft) => {
+      draft.uploaded.loading = false;
+      draft.uploaded.data = action.payload;
+    })
+  )
+  .handleAction(postActions.uploadImages.failure, (state, action) =>
+    produce(state, (draft) => {
+      draft.uploaded.loading = false;
+      draft.uploaded.error = action.payload;
+    })
+  )
   .handleAction(postActions.removeImage.request, (state) =>
     produce(state, (draft) => {
       draft.removeImage.loading = true;
-      return draft;
     })
   )
   .handleAction(postActions.removeImage.success, (state, action) =>
     produce(state, (draft) => {
       draft.removeImage.complete = true;
       draft.removeImage.loading = false;
-      const idx = draft.uploaded.data?.findIndex((path) => path === action.payload.path);
+      const idx = draft.uploaded.data.findIndex((path) => path === action.payload.path);
       if (idx && draft.uploaded.data) {
         draft.uploaded.data.splice(idx, 1);
       }
-      return draft;
     })
   )
   .handleAction(postActions.removeImage.failure, (state, action) =>
     produce(state, (draft) => {
       draft.removeImage.loading = false;
       draft.removeImage.error = action.payload;
-      return draft;
     })
   )
   .handleAction(postActions.addPost.request, (state) =>
@@ -125,7 +116,6 @@ export default createReducer(initialState)
       draft.addPost.complete = false;
       draft.addPost.loading = true;
       draft.addPost.error = '';
-      return draft;
     })
   )
   .handleAction(postActions.addPost.success, (state, action) =>
@@ -134,13 +124,38 @@ export default createReducer(initialState)
       else draft.mainPosts.data = [action.payload];
       draft.addPost.complete = true;
       draft.addPost.loading = false;
-      return draft;
     })
   )
   .handleAction(postActions.addPost.failure, (state, action) =>
     produce(state, (draft) => {
       draft.addPost.loading = false;
       draft.addPost.error = action.payload;
-      return draft;
     })
+  )
+  .handleAction(
+    [postActions.loadMainPosts.request, postActions.loadHashtagPosts.request, postActions.loadUserPost.request],
+    (state, action) =>
+      produce(state, (draft) => {
+        draft.mainPosts.data = action.payload.lastId ? draft.mainPosts.data : [];
+        draft.mainPosts.hasMorePosts = action.payload.lastId ? true : draft.mainPosts.hasMorePosts;
+        draft.mainPosts.loading = true;
+        draft.mainPosts.error = '';
+      })
+  )
+  .handleAction(
+    [postActions.loadMainPosts.success, postActions.loadHashtagPosts.success, postActions.loadUserPost.success],
+    (state, action) =>
+      produce(state, (draft) => {
+        draft.mainPosts.loading = false;
+        if (draft.mainPosts.data) draft.mainPosts.data.push(...action.payload);
+        else draft.mainPosts.data = action.payload;
+      })
+  )
+  .handleAction(
+    [postActions.loadMainPosts.failure, postActions.loadHashtagPosts.failure, postActions.loadUserPost.failure],
+    (state, action) =>
+      produce(state, (draft) => {
+        draft.mainPosts.loading = false;
+        draft.mainPosts.error = action.payload;
+      })
   );

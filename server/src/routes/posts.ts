@@ -46,15 +46,15 @@ router.get('/', async (req, res, next) => {
             },
           ],
           order: [['createdAt', 'DESC']],
-          limit: Number(req.query.limit),
         },
       ],
+      limit: Number(req.query.limit),
     });
 
     res.json(posts);
   } catch (e) {
     console.error(e);
-    return next(e);
+    next(e);
   }
 });
 

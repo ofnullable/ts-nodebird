@@ -26,4 +26,11 @@ export interface LoadUserParams {
 
 export interface Post {
   id: number;
+  images?: string[];
+  content: string;
+  user: User;
+  likers?: any[];
+  retweetId?: number;
+  retweet?: Post;
+  createdAt: Date;
 }

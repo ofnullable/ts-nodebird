@@ -10,6 +10,10 @@ export const removeImageApi = (filename: string): AxiosPromise => {
   return api.delete(`/post/image/${filename}`);
 };
 
-export const addPostApi = (data: Post): AxiosPromise => {
+export const addPostApi = (data: FormData): AxiosPromise => {
   return api.post('/post', data);
+};
+
+export const loadMainPostsApi = (lastId = 0, limit = 10): AxiosPromise => {
+  return api.get(`/posts?lastId=${lastId}&limit=${limit}`);
 };

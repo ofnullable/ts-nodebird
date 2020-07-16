@@ -30,7 +30,7 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
 
     const newPost = await Post.create({
       content: req.body.content,
-      UserId: req.user!.id,
+      userId: req.user!.id,
     });
 
     if (hashtag) {
@@ -280,7 +280,8 @@ router.post('/:id/retweet', isLogin, async (req, res, next) => {
     });
 
     if (exPost) {
-      return res.status(400).send('이미 리트윗한 트윗입니다.');
+      res.status(400).send('이미 리트윗한 트윗입니다.');
+      return;
     }
 
     const retweet = await Post.create({
@@ -312,7 +313,7 @@ router.post('/:id/retweet', isLogin, async (req, res, next) => {
       ],
     });
 
-    return res.json(retweetWithPrevPost);
+    res.json(retweetWithPrevPost);
   } catch (e) {
     console.error(e);
     next(e);

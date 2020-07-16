@@ -1,13 +1,14 @@
 import Link from 'next/link';
 
 interface AppLinkProps {
-  href: string;
+  href: string | { pathname: string; query: { [key: string]: string } };
+  as?: string;
   children: React.ReactNode;
 }
 
-function AppLink({ href, children }: AppLinkProps) {
+function AppLink({ href, as, children }: AppLinkProps) {
   return (
-    <Link href={href}>
+    <Link href={href} as={as}>
       <a>{children}</a>
     </Link>
   );
