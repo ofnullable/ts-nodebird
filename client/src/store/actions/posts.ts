@@ -29,7 +29,7 @@ export const postActions = {
     posts.LOAD_HASHTAG_POSTS.REQUEST,
     posts.LOAD_HASHTAG_POSTS.SUCCESS,
     posts.LOAD_HASHTAG_POSTS.FAILURE
-  )<{ lastId?: number }, Post[], string>(),
+  )<{ lastId?: number; tag: string }, Post[], string>(),
 
   loadUserPost: createAsyncAction(
     posts.LOAD_USER_POSTS.REQUEST,
