@@ -22,7 +22,7 @@ const app = express();
 passportConfig();
 
 sequelize
-  .sync({ force: !prod })
+  .sync()
   .then(() => {
     console.log('Success sync database');
   })

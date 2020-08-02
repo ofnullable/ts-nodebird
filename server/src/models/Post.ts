@@ -1,17 +1,19 @@
 import {
+  DataTypes,
+  Model,
+  Association,
   BelongsToManyAddAssociationMixin,
   BelongsToManyAddAssociationsMixin,
   BelongsToManyRemoveAssociationMixin,
-  DataTypes,
   HasManyAddAssociationMixin,
   HasManyAddAssociationsMixin,
-  Model,
 } from 'sequelize';
 import { sequelize } from './sequelize';
 import { DbType } from './index';
 import Hashtag from './Hashtag';
 import Image from './Image';
 import User from './User';
+import Comment from './Comment';
 
 class Post extends Model {
   public readonly id!: number;
@@ -28,6 +30,14 @@ class Post extends Model {
 
   public readonly retweet?: Post;
 
+  public readonly Retweet?: Post;
+
+  public readonly User?: User;
+
+  public readonly Images?: Image[];
+
+  public readonly Comments?: Comment[];
+
   public addImage!: HasManyAddAssociationMixin<Image, number>;
 
   public addImages!: HasManyAddAssociationsMixin<Image, number>;
@@ -37,6 +47,10 @@ class Post extends Model {
   public addLiker!: BelongsToManyAddAssociationMixin<User, number>;
 
   public removeLiker!: BelongsToManyRemoveAssociationMixin<User, number>;
+
+  public static associations: {
+    Retweet: Association<Post, Post>;
+  };
 }
 
 Post.init(
