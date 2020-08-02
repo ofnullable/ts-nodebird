@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import AppLink from '../common/AppLink';
 
 interface PostCardContentProps {
@@ -12,7 +11,7 @@ function PostCardContent({ content }: PostCardContentProps) {
           return (
             <AppLink
               href={{ pathname: '/hashtag', query: { tag: value.slice(1) } }}
-              as={`/hashtag/${value}`}
+              as={`/hashtag/${value.slice(1)}`}
               key={value}
             >
               {value}

@@ -10,6 +10,7 @@ const router = express.Router();
 router.get('/:tag', async (req, res, next) => {
   try {
     const lastId = Number(req.query.lastId);
+    const limit = Number(req.query.limit);
 
     const posts = await Post.findAll({
       where: lastId
@@ -49,10 +50,10 @@ router.get('/:tag', async (req, res, next) => {
               model: Image,
             },
           ],
-          order: [['createdAt', 'DESC']],
-          limit: Number(req.query.limit),
         },
       ],
+      order: [['createdAt', 'DESC']],
+      limit,
     });
 
     res.json(posts);

@@ -1,7 +1,7 @@
-import { all, call, debounce, fork, put, takeLatest } from 'redux-saga/effects';
+import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import { postActions } from '../actions/posts';
 import { getFailureMessage } from '../../utils/redux';
-import { addPostApi, loadMainPostsApi, removeImageApi, uploadImageApi } from '../../api/posts';
+import { addPostApi, loadHashtagPostsApi, loadMainPostsApi, removeImageApi, uploadImageApi } from '../../api/posts';
 
 function* uploadImage({ payload }: ReturnType<typeof postActions.uploadImages.request>) {
   try {
@@ -56,9 +56,29 @@ function* loadMainPosts({ payload }: ReturnType<typeof postActions.loadMainPosts
 }
 
 function* watchLoadMainPosts() {
-  yield debounce(2000, postActions.loadMainPosts.request, loadMainPosts);
+  yield takeLatest(postActions.loadMainPosts.request, loadMainPosts);
+}
+
+function* loadHashtagPosts({ payload }: ReturnType<typeof postActions.loadHashtagPosts.request>) {
+  try {
+    const { data } = yield call(loadHashtagPostsApi, payload);
+    yield put(postActions.loadHashtagPosts.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(postActions.loadHashtagPosts.failure(e));
+  }
+}
+
+function* watchLoadHashtagPosts() {
+  yield takeLatest(postActions.loadHashtagPosts.request, loadHashtagPosts);
 }
 
 export default function* postSaga() {
-  yield all([fork(watchUploadImage), fork(watchRemoveImage), fork(watchAddPost), fork(watchLoadMainPosts)]);
+  yield all([
+    fork(watchUploadImage),
+    fork(watchRemoveImage),
+    fork(watchAddPost),
+    fork(watchLoadMainPosts),
+    fork(watchLoadHashtagPosts),
+  ]);
 }

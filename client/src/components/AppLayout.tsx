@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-// For Menu Component rc-menu props..
+// For Menu Component use rc-menu props..
 // ref: https://github.com/ant-design/ant-design/issues/17551
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomMenu = Menu as any;
