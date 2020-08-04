@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
+import * as Sequelize from 'sequelize';
 import { isLogin } from '../middlewars';
 import User from '../models/User';
 import Post from '../models/Post';
@@ -23,8 +24,7 @@ router.post('/', async (req, res, next) => {
       },
     });
     if (exUser) {
-      res.status(409).send('이미 사용중인 사용자 이름입니다.');
-      return;
+      return res.status(409).send('이미 사용중인 사용자 이름입니다.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 15);
@@ -34,11 +34,10 @@ router.post('/', async (req, res, next) => {
       password: hashedPassword,
     });
 
-    res.status(201).json(newUser);
-    return;
+    return res.status(201).json(newUser);
   } catch (e) {
     console.error(e);
-    next(e);
+    return next(e);
   }
 });
 
@@ -75,8 +74,7 @@ router.get('/:id', async (req, res, next) => {
     });
 
     if (!user) {
-      res.status(404).send('존재하지 않는 회원입니다.');
-      return;
+      return res.status(404).send('존재하지 않는 회원입니다.');
     }
 
     const jsonUser = user.toJSON() as IUser;
@@ -84,11 +82,10 @@ router.get('/:id', async (req, res, next) => {
     jsonUser.followingCount = jsonUser.followings!.length;
     jsonUser.followerCount = jsonUser.followers!.length;
 
-    res.json(jsonUser);
-    return;
+    return res.json(jsonUser);
   } catch (e) {
     console.error(e);
-    next(e);
+    return next(e);
   }
 });
 
@@ -185,10 +182,19 @@ router.delete('/:id/follow', isLogin, async (req, res, next) => {
 
 router.get('/:id/posts', async (req, res, next) => {
   try {
+    const lastId = Number(req.query.lastId);
+
     const posts = await Post.findAll({
       where: {
-        UserId: Number(req.params.id) || (req.user && req.user.id) || 0,
-        RetweetId: null,
+        userId: Number(req.params.id) || (req.user && req.user.id) || 0,
+        retweetId: null,
+        ...(lastId
+          ? {
+              id: {
+                [Sequelize.Op.lt]: Number(req.query.lastId),
+              },
+            }
+          : {}),
       },
       include: [
         {
@@ -204,12 +210,13 @@ router.get('/:id/posts', async (req, res, next) => {
           attributes: ['id'],
         },
       ],
+      limit: Number(req.query.limit),
     });
 
     return res.json(posts);
   } catch (e) {
     console.error(e);
-    next(e);
+    return next(e);
   }
 });
 
@@ -227,7 +234,7 @@ router.patch('/nickname', isLogin, async (req, res, next) => {
     return res.send(req.body.nickname);
   } catch (e) {
     console.error(e);
-    next(e);
+    return next(e);
   }
 });
 
