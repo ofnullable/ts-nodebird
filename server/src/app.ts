@@ -4,8 +4,8 @@ import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import * as expressSession from 'express-session';
 import * as hpp from 'hpp';
-import * as helmet from 'helmet';
 import * as passport from 'passport';
+import helmet from 'helmet';
 
 import passportConfig from './passport';
 import { sequelize } from './models';
