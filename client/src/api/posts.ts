@@ -22,6 +22,15 @@ interface HashtagPostsParams {
   limit?: number;
   tag: string;
 }
-export const loadHashtagPostsApi = ({ lastId, limit = 10, tag }: HashtagPostsParams): AxiosPromise => {
+export const loadHashtagPostsApi = ({ lastId = 0, limit = 10, tag }: HashtagPostsParams): AxiosPromise => {
   return api.get(`/hashtag/${encodeURIComponent(tag)}?lastId=${lastId}&limit=${limit}`);
+};
+
+interface UserPostsParams {
+  userId?: number;
+  lastId?: number;
+  limit?: number;
+}
+export const loadUserPostsApi = ({ userId = 0, lastId = 0, limit = 10 }: UserPostsParams): AxiosPromise => {
+  return api.get(`/users/${userId}/posts?lastId=${lastId}&limit=${limit}`);
 };

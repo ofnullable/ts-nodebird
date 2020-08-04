@@ -5,7 +5,7 @@ import { User } from '../interfaces';
 
 export interface UsersState {
   auth: {
-    info: User | null;
+    info?: User;
     loading: boolean;
     error: string;
   };
@@ -15,13 +15,13 @@ export interface UsersState {
     error: string;
   };
   followers: {
-    data: User[] | null;
+    data?: User[];
     loading: boolean;
     error: string;
     hasMoreFollowers: boolean;
   };
   followings: {
-    data: User[] | null;
+    data?: User[];
     loading: boolean;
     error: string;
     hasMoreFollowings: boolean;
@@ -30,7 +30,7 @@ export interface UsersState {
 
 export const initialState: UsersState = {
   auth: {
-    info: null,
+    info: undefined,
     loading: false,
     error: '',
   },
@@ -40,13 +40,13 @@ export const initialState: UsersState = {
     error: '',
   },
   followers: {
-    data: null,
+    data: undefined,
     loading: false,
     error: '',
     hasMoreFollowers: false,
   },
   followings: {
-    data: null,
+    data: undefined,
     loading: false,
     error: '',
     hasMoreFollowings: false,
@@ -105,8 +105,9 @@ export default createReducer(initialState)
       draft.auth.loading = false;
     })
   )
-  .handleAction(userActions.loadUser.failure, (state) =>
+  .handleAction(userActions.loadUser.failure, (state, action) =>
     produce(state, (draft) => {
+      draft.auth.error = action.payload;
       draft.auth.loading = false;
     })
   );

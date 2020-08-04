@@ -28,7 +28,7 @@ function AppLayout({ children }: Props) {
         <Menu.Item key="home">
           <AppLink href="/">NodeBird</AppLink>
         </Menu.Item>
-        <Menu.Item key="profile">
+        <Menu.Item key="profile" disabled={!info}>
           <AppLink href="/profile">Profile</AppLink>
         </Menu.Item>
         <Menu.Item key="search">

@@ -1,6 +1,6 @@
 import { takeLatest, call, put, all, fork } from 'redux-saga/effects';
 import { userActions } from '../actions/users';
-import { joinApi, loadUserApi, signInApi } from '../../api/users';
+import { joinApi, loadFollowersApi, loadFollowingsApi, loadUserApi, signInApi } from '../../api/users';
 import { getFailureMessage } from '../../utils/redux';
 
 function* join({ payload }: ReturnType<typeof userActions.join.request>) {
@@ -45,6 +45,40 @@ function* watchLoadUser() {
   yield takeLatest(userActions.loadUser.request, loadUser);
 }
 
+function* loadFollowers({ payload }: ReturnType<typeof userActions.loadFollowers.request>) {
+  try {
+    const { data } = yield call(loadFollowersApi, payload);
+    yield put(userActions.loadFollowers.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(userActions.loadFollowers.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchLoadFollowers() {
+  yield takeLatest(userActions.loadFollowers.request, loadFollowers);
+}
+
+function* loadFollowings({ payload }: ReturnType<typeof userActions.loadFollowings.request>) {
+  try {
+    const { data } = yield call(loadFollowingsApi, payload);
+    yield put(userActions.loadFollowings.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(userActions.loadFollowings.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchLoadFollowings() {
+  yield takeLatest(userActions.loadFollowings.request, loadFollowings);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchJoin), fork(watchSignIn), fork(watchLoadUser)]);
+  yield all([
+    fork(watchJoin),
+    fork(watchSignIn),
+    fork(watchLoadUser),
+    fork(watchLoadFollowers),
+    fork(watchLoadFollowings),
+  ]);
 }

@@ -40,7 +40,6 @@ function Home() {
 }
 
 Home.getInitialProps = async ({ store }: NextPageContext) => {
-  console.log('home initial props');
   store.dispatch(postActions.loadMainPosts.request({}));
   return {};
 };
