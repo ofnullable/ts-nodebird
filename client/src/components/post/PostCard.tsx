@@ -9,7 +9,7 @@ import { AppState } from '../../store/reducers';
 import PostCardContent from './PostCardContent';
 
 const cardWrapperStyle = css`
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 `;
 
 interface PostCardProps {

@@ -25,7 +25,7 @@ const errorMessageStyle = css`
 function SignInForm() {
   const [email, handleEmailChange] = useInput('');
   const [password, handlePasswordChange] = useInput('');
-  const { error, loading } = useSelector((state: AppState) => state.user.auth);
+  const { signInError, loading } = useSelector((state: AppState) => state.user.auth);
   const dispatch = useDispatch();
 
   const handleSubmit = useCallback(() => {
@@ -42,7 +42,7 @@ function SignInForm() {
         <label htmlFor="password">Password</label>
         <Input name="password" type="password" value={password} onChange={handlePasswordChange} required />
       </div>
-      {error && <p css={[errorMessageStyle]}>{error}</p>}
+      {signInError && <p css={[errorMessageStyle]}>{signInError}</p>}
       <div css={[ButtonWrapperStyle]}>
         <Button type="primary" htmlType="submit" loading={loading}>
           Sign-in

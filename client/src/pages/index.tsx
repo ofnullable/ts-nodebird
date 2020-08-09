@@ -6,7 +6,7 @@ import PostRegisterForm from '../components/post/PostRegisterForm';
 import { postActions } from '../store/actions/posts';
 import PostCard from '../components/post/PostCard';
 
-function Home() {
+function HomePage() {
   const { info } = useSelector((state: AppState) => state.user.auth);
   const { data, hasMorePosts, loading } = useSelector((state: AppState) => state.post.mainPosts);
   const count = useRef<Number[]>([]);
@@ -39,9 +39,9 @@ function Home() {
   );
 }
 
-Home.getInitialProps = async ({ store }: NextPageContext) => {
+HomePage.getInitialProps = async ({ store }: NextPageContext) => {
   store.dispatch(postActions.loadMainPosts.request({}));
   return {};
 };
 
-export default Home;
+export default HomePage;

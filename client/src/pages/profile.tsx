@@ -1,6 +1,7 @@
 import { NextPageContext } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
+import { Typography } from 'antd';
 import { userActions } from '../store/actions/users';
 import { postActions } from '../store/actions/posts';
 import { AppState } from '../store/reducers';
@@ -8,12 +9,10 @@ import NicknameEditForm from '../components/auth/NicknameEditForm';
 import PostCard from '../components/post/PostCard';
 import FollowList from '../components/auth/FollowList';
 
-function Profile() {
-  const { auth, followers, followings } = useSelector((state: AppState) => state.user);
+function ProfilePage() {
+  const { followers, followings } = useSelector((state: AppState) => state.user);
   const { mainPosts } = useSelector((state: AppState) => state.post);
   const dispatch = useDispatch();
-
-  console.log(auth, followers, followings);
 
   const handleUnFollow = useCallback(
     (userId: number) => () => {
@@ -40,29 +39,36 @@ function Profile() {
   return (
     <>
       <NicknameEditForm />
-      {followings.data?.length ? (
-        <FollowList
-          header="Followings"
-          hasMore={followings.hasMoreFollowings}
-          handleLoadMore={loadMoreFollowings}
-          data={followings.data}
-          handleStopFollow={handleUnFollow}
-        />
-      ) : (
-        <p>You haven&apos;t followed anyone yet!</p>
-      )}
-      {followers.data?.length ? (
-        <FollowList
-          header="Followers"
-          hasMore={followers.hasMoreFollowers}
-          handleLoadMore={loadMoreFollowers}
-          data={followers.data}
-          handleStopFollow={handleRemoveFollower}
-        />
-      ) : (
-        <p>No one&apos;s following you yet!</p>
-      )}
       <div>
+        <Typography.Title level={2}>Following</Typography.Title>
+        {followings.data?.length ? (
+          <FollowList
+            header="Followings"
+            hasMore={followings.hasMoreFollowings}
+            handleLoadMore={loadMoreFollowings}
+            data={followings.data}
+            handleStopFollow={handleUnFollow}
+          />
+        ) : (
+          <p>You haven&apos;t followed anyone yet!</p>
+        )}
+      </div>
+      <div>
+        <Typography.Title level={2}>Follower</Typography.Title>
+        {followers.data?.length ? (
+          <FollowList
+            header="Followers"
+            hasMore={followers.hasMoreFollowers}
+            handleLoadMore={loadMoreFollowers}
+            data={followers.data}
+            handleStopFollow={handleRemoveFollower}
+          />
+        ) : (
+          <p>No one&apos;s following you yet!</p>
+        )}
+      </div>
+      <div>
+        <Typography.Title level={2}>My twit</Typography.Title>
         {mainPosts.data?.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}
@@ -71,7 +77,7 @@ function Profile() {
   );
 }
 
-Profile.getInitialProps = async ({ store }: NextPageContext) => {
+ProfilePage.getInitialProps = async ({ store }: NextPageContext) => {
   const { user } = store.getState();
 
   store.dispatch(userActions.loadFollowers.request({ userId: user.auth?.id }));
@@ -81,4 +87,4 @@ Profile.getInitialProps = async ({ store }: NextPageContext) => {
   return {};
 };
 
-export default Profile;
+export default ProfilePage;

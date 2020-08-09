@@ -18,8 +18,8 @@ const CustomMenu = Menu as any;
 function AppLayout({ children }: Props) {
   const { info } = useSelector((state: AppState) => state.user.auth);
 
-  const onSearch = (value: string) => {
-    Router.push({ pathname: '/hashtag', query: { tag: value } }, `/hashtag/${value}`);
+  const onSearch = (tag: string) => {
+    if (tag) Router.push({ pathname: '/hashtag', query: { tag } }, `/hashtag/${tag}`);
   };
 
   return (

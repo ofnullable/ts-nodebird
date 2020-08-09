@@ -1,10 +1,18 @@
 import { Avatar, Button, Card } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
 import { AppState } from '../../store/reducers';
 import AppLink from '../common/AppLink';
+import { userActions } from '../../store/actions/users';
 
 function SimpleProfile() {
-  const { info } = useSelector((state: AppState) => state.user.auth);
+  const { info, loading } = useSelector((state: AppState) => state.user.auth);
+  const dispatch = useDispatch();
+
+  const handleSignOut = useCallback(() => {
+    dispatch(userActions.signOut.request());
+  }, []);
+
   return (
     <Card
       actions={[
@@ -29,7 +37,9 @@ function SimpleProfile() {
       ]}
     >
       <Card.Meta avatar={<Avatar>{info?.nickname[0]}</Avatar>} title={info?.nickname} />
-      <Button>Sign-out</Button>
+      <Button onClick={handleSignOut} loading={loading}>
+        Sign-out
+      </Button>
     </Card>
   );
 }

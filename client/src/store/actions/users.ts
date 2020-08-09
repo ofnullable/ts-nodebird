@@ -5,7 +5,8 @@ import { asyncActionCreator } from '../../utils/redux';
 export const users = {
   JOIN: asyncActionCreator('users/JOIN'),
   SIGN_IN: asyncActionCreator('users/SIGN_IN'),
-  LOAD_USER: asyncActionCreator('users/LOAD_USER'),
+  LOAD_MY_INFO: asyncActionCreator('users/LOAD_MY_INFO'),
+  LOAD_USER_INFO: asyncActionCreator('users/LOAD_USER_INFO'),
   SIGN_OUT: asyncActionCreator('users/SIGN_OUT'),
   FOLLOW: asyncActionCreator('users/FOLLOW'),
   UNFOLLOW: asyncActionCreator('users/UNFOLLOW'),
@@ -32,11 +33,17 @@ export const userActions = {
 
   join: createAsyncAction(users.JOIN.REQUEST, users.JOIN.SUCCESS, users.JOIN.FAILURE)<JoinParams, User, string>(),
 
-  loadUser: createAsyncAction(users.LOAD_USER.REQUEST, users.LOAD_USER.SUCCESS, users.LOAD_USER.FAILURE)<
-    number | undefined,
+  loadMyInfo: createAsyncAction(users.LOAD_MY_INFO.REQUEST, users.LOAD_MY_INFO.SUCCESS, users.LOAD_MY_INFO.FAILURE)<
+    void,
     User,
     string
   >(),
+
+  loadUserInfo: createAsyncAction(
+    users.LOAD_USER_INFO.REQUEST,
+    users.LOAD_USER_INFO.SUCCESS,
+    users.LOAD_USER_INFO.FAILURE
+  )<number, User, string>(),
 
   follow: createAsyncAction(users.FOLLOW.REQUEST, users.FOLLOW.SUCCESS, users.FOLLOW.FAILURE)<void, void, string>(),
 

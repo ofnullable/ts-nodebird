@@ -8,7 +8,7 @@ import PostCard from '../../components/post/PostCard';
 interface HashtagProps {
   tag: string;
 }
-const Hashtag = ({ tag }: HashtagProps) => {
+const HashtagPage = ({ tag }: HashtagProps) => {
   const dispatch = useDispatch();
 
   const { data, hasMorePosts } = useSelector((state: AppState) => state.post.mainPosts);
@@ -44,11 +44,11 @@ interface HashtagPageContext extends NextPageContext {
   };
 }
 
-Hashtag.getInitialProps = async ({ store, query }: HashtagPageContext) => {
+HashtagPage.getInitialProps = async ({ store, query }: HashtagPageContext) => {
   const { tag } = query;
 
   store.dispatch(postActions.loadHashtagPosts.request({ tag }));
   return { tag };
 };
 
-export default Hashtag;
+export default HashtagPage;
