@@ -7,6 +7,13 @@ import { postActions } from '../../store/actions/posts';
 import { AppState } from '../../store/reducers';
 import { serverAddress } from '../../utils/global';
 
+const postRegisterFormStyle = css`
+  margin-bottom: 1rem;
+  textarea {
+    margin-bottom: 0.5rem;
+  }
+`;
+
 const uploadedImageStyle = css`
   display: inline-block;
   img {
@@ -68,7 +75,7 @@ function PostRegisterForm() {
   }, [text, uploaded]);
 
   return (
-    <Form encType="multipart/form-data" onFinish={handleSubmit}>
+    <Form encType="multipart/form-data" onFinish={handleSubmit} css={[postRegisterFormStyle]}>
       <Input.TextArea
         maxLength={150}
         placeholder="어떤 신기한 일이 있었나요?"

@@ -18,8 +18,8 @@ const CustomMenu = Menu as any;
 function AppLayout({ children }: Props) {
   const { info } = useSelector((state: AppState) => state.user.auth);
 
-  const onSearch = (value: string) => {
-    Router.push({ pathname: '/hashtag', query: { tag: value } }, `/hashtag/${value}`);
+  const onSearch = (tag: string) => {
+    if (tag) Router.push({ pathname: '/hashtag', query: { tag } }, `/hashtag/${tag}`);
   };
 
   return (
@@ -28,7 +28,7 @@ function AppLayout({ children }: Props) {
         <Menu.Item key="home">
           <AppLink href="/">NodeBird</AppLink>
         </Menu.Item>
-        <Menu.Item key="profile">
+        <Menu.Item key="profile" disabled={!info}>
           <AppLink href="/profile">Profile</AppLink>
         </Menu.Item>
         <Menu.Item key="search">

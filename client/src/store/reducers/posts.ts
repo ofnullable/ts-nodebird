@@ -133,7 +133,7 @@ export default createReducer(initialState)
     })
   )
   .handleAction(
-    [postActions.loadMainPosts.request, postActions.loadHashtagPosts.request, postActions.loadUserPost.request],
+    [postActions.loadMainPosts.request, postActions.loadHashtagPosts.request, postActions.loadUserPosts.request],
     (state, action) =>
       produce(state, (draft) => {
         draft.mainPosts.data = action.payload.lastId ? draft.mainPosts.data : [];
@@ -143,7 +143,7 @@ export default createReducer(initialState)
       })
   )
   .handleAction(
-    [postActions.loadMainPosts.success, postActions.loadHashtagPosts.success, postActions.loadUserPost.success],
+    [postActions.loadMainPosts.success, postActions.loadHashtagPosts.success, postActions.loadUserPosts.success],
     (state, action) =>
       produce(state, (draft) => {
         draft.mainPosts.loading = false;
@@ -152,7 +152,7 @@ export default createReducer(initialState)
       })
   )
   .handleAction(
-    [postActions.loadMainPosts.failure, postActions.loadHashtagPosts.failure, postActions.loadUserPost.failure],
+    [postActions.loadMainPosts.failure, postActions.loadHashtagPosts.failure, postActions.loadUserPosts.failure],
     (state, action) =>
       produce(state, (draft) => {
         draft.mainPosts.loading = false;

@@ -20,10 +20,6 @@ export interface JoinParams {
   password: string;
 }
 
-export interface LoadUserParams {
-  id?: number;
-}
-
 export interface Post {
   id: number;
   images?: string[];
@@ -33,4 +29,10 @@ export interface Post {
   retweetId?: number;
   retweet?: Post;
   createdAt: Date;
+}
+
+export interface FollowParams {
+  userId?: number;
+  limit?: number;
+  offset?: number;
 }

@@ -7,7 +7,7 @@ import useInput from '../lib/hooks/useInput';
 import { AppState } from '../store/reducers';
 import { userActions } from '../store/actions/users';
 
-function SignUp() {
+function SignUpPage() {
   const [email, handleEmailChange] = useInput('');
   const [nickname, handleNicknameChange] = useInput('');
 
@@ -103,4 +103,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpPage;

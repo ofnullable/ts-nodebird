@@ -31,11 +31,11 @@ export const postActions = {
     posts.LOAD_HASHTAG_POSTS.FAILURE
   )<{ lastId?: number; tag: string }, Post[], string>(),
 
-  loadUserPost: createAsyncAction(
+  loadUserPosts: createAsyncAction(
     posts.LOAD_USER_POSTS.REQUEST,
     posts.LOAD_USER_POSTS.SUCCESS,
     posts.LOAD_USER_POSTS.FAILURE
-  )<{ lastId?: number }, Post[], string>(),
+  )<{ lastId?: number; userId?: number }, Post[], string>(),
 
   loadPost: createAsyncAction(posts.LOAD_POST.REQUEST, posts.LOAD_POST.SUCCESS, posts.LOAD_POST.FAILURE)<
     void,
