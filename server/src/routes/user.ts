@@ -41,12 +41,6 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-interface IUser extends User {
-  postCount: number;
-  followingCount: number;
-  followerCount: number;
-}
-
 router.get('/:id', async (req, res, next) => {
   try {
     const user = await User.findOne({
@@ -77,12 +71,7 @@ router.get('/:id', async (req, res, next) => {
       return res.status(404).send('존재하지 않는 회원입니다.');
     }
 
-    const jsonUser = user.toJSON() as IUser;
-    jsonUser.postCount = jsonUser.posts!.length;
-    jsonUser.followingCount = jsonUser.followings!.length;
-    jsonUser.followerCount = jsonUser.followers!.length;
-
-    return res.json(jsonUser);
+    return res.json(user.toJSON());
   } catch (e) {
     console.error(e);
     return next(e);
