@@ -26,7 +26,7 @@ export interface PostsState {
     error: string;
   };
   uploaded: {
-    data: string[];
+    data: string[] | null;
     loading: boolean;
     error: string;
   };
@@ -60,7 +60,7 @@ export const initialState: PostsState = {
     error: '',
   },
   uploaded: {
-    data: [],
+    data: null,
     loading: false,
     error: '',
   },
@@ -122,6 +122,7 @@ export default createReducer(initialState)
     produce(state, (draft) => {
       if (draft.mainPosts.data) draft.mainPosts.data.unshift(action.payload);
       else draft.mainPosts.data = [action.payload];
+      draft.uploaded.data = null;
       draft.addPost.complete = true;
       draft.addPost.loading = false;
     })

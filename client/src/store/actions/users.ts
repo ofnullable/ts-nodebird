@@ -45,7 +45,7 @@ export const userActions = {
     users.LOAD_USER_INFO.FAILURE
   )<number, User, string>(),
 
-  follow: createAsyncAction(users.FOLLOW.REQUEST, users.FOLLOW.SUCCESS, users.FOLLOW.FAILURE)<void, void, string>(),
+  follow: createAsyncAction(users.FOLLOW.REQUEST, users.FOLLOW.SUCCESS, users.FOLLOW.FAILURE)<number, void, string>(),
 
   unfollow: createAsyncAction(users.UNFOLLOW.REQUEST, users.UNFOLLOW.SUCCESS, users.UNFOLLOW.FAILURE)<
     number,
