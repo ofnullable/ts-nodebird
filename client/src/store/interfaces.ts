@@ -5,8 +5,8 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   posts: unknown[];
-  followings: unknown[];
-  followers: unknown[];
+  followers?: User[];
+  followings?: User[];
 }
 
 export interface SignInParams {
@@ -22,10 +22,10 @@ export interface JoinParams {
 
 export interface Post {
   id: number;
-  images?: string[];
+  images?: { src: string }[];
   content: string;
   user: User;
-  likers?: any[];
+  likers?: User[];
   retweetId?: number;
   retweet?: Post;
   createdAt: Date;

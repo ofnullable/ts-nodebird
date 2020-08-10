@@ -2,9 +2,9 @@ import { Col, Input, Menu, Row } from 'antd';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import { AppState } from '../store/reducers';
-import SignInForm from './auth/SignInForm';
+import SignInForm from './user/SignInForm';
 import AppLink from './common/AppLink';
-import SimpleProfile from './auth/SimpleProfile';
+import SimpleProfile from './user/SimpleProfile';
 
 interface Props {
   children: React.ReactNode;

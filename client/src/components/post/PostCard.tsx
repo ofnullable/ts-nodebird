@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { css } from '@emotion/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Card } from 'antd';
+import { Avatar, Card, Popover, Button } from 'antd';
+import { HeartTwoTone, MessageOutlined, RetweetOutlined, HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import moment from 'moment';
 import { Post } from '../../store/interfaces';
 import { AppState } from '../../store/reducers';
+import { userActions } from '../../store/actions/users';
+import FollowButton from '../user/FollowButton';
+import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 
 const cardWrapperStyle = css`
   margin-bottom: 1rem;
+  & > div > div:first-of-type {
+    margin-bottom: 0;
+  }
 `;
 
 interface PostCardProps {
@@ -17,15 +24,80 @@ interface PostCardProps {
 }
 
 function PostCard({ post }: PostCardProps) {
-  const [openCommentForm, setOpenCommentForm] = useState(false);
+  const [commentFormOpened, setCommentFormOpened] = useState(false);
   const id = useSelector((state: AppState) => state.user.auth.info?.id);
   const dispatch = useDispatch();
 
-  const liked = id && post.likers?.find((liker) => liker.id === id);
+  const liked = post.likers?.find((liker) => liker.id === id);
+
+  const handleRetweet = useCallback(() => {
+    console.log('handle Retweet');
+  }, []);
+
+  const toggleLike = useCallback(() => {
+    if (!id) {
+      alert('로그인이 필요합니다');
+    }
+  }, [id, post?.id, liked]);
+
+  const toggleCommentForm = useCallback(() => {
+    setCommentFormOpened((prev) => !prev);
+
+    if (!commentFormOpened) {
+    }
+  }, []);
+
+  const handleFollow = useCallback(
+    (userId: number) => () => {
+      dispatch(userActions.follow.request(userId));
+    },
+    []
+  );
+
+  const handleUnFollow = useCallback(
+    (userId: number) => () => {
+      dispatch(userActions.unfollow.request(userId));
+    },
+    []
+  );
+
+  const handleRemovePost = useCallback((postId: number) => () => {}, []);
 
   return (
     <div css={[cardWrapperStyle]}>
-      <Card>
+      <Card
+        cover={<PostImages images={post.images || []} />}
+        actions={[
+          <RetweetOutlined key="retweet" onClick={handleRetweet} />,
+          liked ? (
+            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={toggleLike} />
+          ) : (
+            <HeartOutlined key="heart" onClick={toggleLike} />
+          ),
+          <MessageOutlined key="message" onClick={toggleCommentForm} />,
+          <Popover
+            key="ellipsis"
+            content={
+              <Button.Group>
+                {id && post.user.id === id ? (
+                  <>
+                    <Button>수정</Button>
+                    <Button danger onClick={handleRemovePost(post.id)}>
+                      삭제
+                    </Button>
+                  </>
+                ) : (
+                  <Button>신고</Button>
+                )}
+              </Button.Group>
+            }
+          >
+            <EllipsisOutlined />
+          </Popover>,
+        ]}
+        title={post.retweetId ? `${post.user.nickname}님이 리트윗하셨습니다.` : null}
+        extra={<FollowButton post={post} handleFollow={handleFollow} handleUnFollow={handleUnFollow} />}
+      >
         {post.retweetId && post.retweet ? (
           <Card>
             <span style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD.')}</span>
@@ -41,7 +113,7 @@ function PostCard({ post }: PostCardProps) {
                 </Link>
               }
               title={post.retweet.user.nickname}
-              description={<PostCardContent content={post.retweet.content} />} // a tag x -> Link
+              description={<PostCardContent content={post.retweet.content} />}
             />
           </Card>
         ) : (
@@ -56,7 +128,7 @@ function PostCard({ post }: PostCardProps) {
                 </Link>
               }
               title={post.user.nickname}
-              description={<PostCardContent content={post.content} />} // a tag x -> Link
+              description={<PostCardContent content={post.content} />}
             />
           </>
         )}

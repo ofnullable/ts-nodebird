@@ -30,13 +30,13 @@ class Post extends Model {
 
   public readonly retweet?: Post;
 
-  public readonly Retweet?: Post;
+  public readonly user?: User;
 
-  public readonly User?: User;
+  public readonly likers?: User[];
 
-  public readonly Images?: Image[];
+  public readonly images?: Image[];
 
-  public readonly Comments?: Comment[];
+  public readonly comments?: Comment[];
 
   public addImage!: HasManyAddAssociationMixin<Image, number>;
 

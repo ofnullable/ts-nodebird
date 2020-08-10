@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Button, Card, List } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import { User } from '../../store/interfaces';
@@ -9,6 +10,7 @@ interface FollowListProps {
   data: User[] | undefined;
   handleStopFollow: (id: number) => () => void;
 }
+
 function FollowList({ header, hasMore, handleLoadMore, data, handleStopFollow }: FollowListProps) {
   return (
     <List
@@ -36,4 +38,4 @@ function FollowList({ header, hasMore, handleLoadMore, data, handleStopFollow }:
   );
 }
 
-export default FollowList;
+export default memo(FollowList);
