@@ -81,20 +81,30 @@ router.post('/', isLogin, upload.none(), async (req, res, next) => {
 });
 
 router.post('/images', isLogin, upload.array('image'), (req, res) => {
-  console.log(req.files);
-
   res.json((req.files as Express.Multer.File[]).map((v) => `public/${v.filename}`));
 });
 
-router.delete('/image/:filename', isLogin, (req, res, next) => {
-  const uploadedPath = resolve(__dirname, '../../public/uploads');
-  fs.unlink(`${uploadedPath}/${req.params.filename}`, (err) => {
-    if (err) {
-      next(err);
-      return;
+router.delete('/image/:filename', isLogin, async (req, res, next) => {
+  try {
+    const saved = await Image.findOne({ where: { src: req.params.filename } });
+    if (!saved) {
+      return res.status(404).send('이미지가 존재하지 않습니다.');
     }
-    res.status(202).json({ path: `public/${req.params.filename}` });
-  });
+
+    await saved.destroy();
+
+    const uploadedPath = resolve(__dirname, '../../public/uploads');
+    fs.unlink(`${uploadedPath}/${req.params.filename}`, (err) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.status(202).json({ path: `public/${req.params.filename}` });
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
 });
 
 router.get('/:id', async (req, res, next) => {

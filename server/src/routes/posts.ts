@@ -28,6 +28,9 @@ router.get('/', async (req, res, next) => {
           },
         },
         {
+          model: Image,
+        },
+        {
           model: User,
           as: 'likers',
           attributes: ['id'],
