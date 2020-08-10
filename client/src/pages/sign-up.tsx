@@ -19,11 +19,6 @@ function SignUpPage() {
   const { auth, join } = useSelector((state: AppState) => state.user);
   const dispatch = useDispatch();
 
-  if (auth.info) {
-    Router.push('/');
-    return null;
-  }
-
   useEffect(() => {
     if (join.complete) {
       Router.push('/');
@@ -61,6 +56,11 @@ function SignUpPage() {
   const handleTermChange = useCallback(({ target }: CheckboxChangeEvent) => {
     setTerm(target.checked);
   }, []);
+
+  if (auth.info) {
+    Router.push('/');
+    return null;
+  }
 
   return (
     <>

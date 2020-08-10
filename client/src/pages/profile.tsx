@@ -5,9 +5,9 @@ import { Typography } from 'antd';
 import { userActions } from '../store/actions/users';
 import { postActions } from '../store/actions/posts';
 import { AppState } from '../store/reducers';
-import NicknameEditForm from '../components/auth/NicknameEditForm';
+import NicknameEditForm from '../components/user/NicknameEditForm';
 import PostCard from '../components/post/PostCard';
-import FollowList from '../components/auth/FollowList';
+import FollowList from '../components/user/FollowList';
 
 function ProfilePage() {
   const { followers, followings } = useSelector((state: AppState) => state.user);
@@ -30,11 +30,11 @@ function ProfilePage() {
 
   const loadMoreFollowings = useCallback(() => {
     dispatch(userActions.loadFollowings.request({ offset: followings.data?.length }));
-  }, []);
+  }, [followings.data?.length]);
 
   const loadMoreFollowers = useCallback(() => {
-    dispatch(userActions.loadFollowers.request({ offset: followings.data?.length }));
-  }, []);
+    dispatch(userActions.loadFollowers.request({ offset: followers.data?.length }));
+  }, [followers.data?.length]);
 
   return (
     <>
