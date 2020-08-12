@@ -34,3 +34,19 @@ interface UserPostsParams {
 export const loadUserPostsApi = ({ userId = 0, lastId = 0, limit = 10 }: UserPostsParams): AxiosPromise => {
   return api.get(`/users/${userId}/posts?lastId=${lastId}&limit=${limit}`);
 };
+
+export const likePostApi = (postId: number): AxiosPromise => {
+  return api.post(`/post/${postId}/like`);
+};
+
+export const unlikePostApi = (postId: number): AxiosPromise => {
+  return api.delete(`/post/${postId}/like`);
+};
+
+export const removePostApi = (postId: number): AxiosPromise => {
+  return api.delete(`/post/${postId}`);
+};
+
+export const retweetApi = (postId: number): AxiosPromise => {
+  return api.post(`/post/${postId}/retweet`);
+};

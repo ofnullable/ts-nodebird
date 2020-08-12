@@ -35,6 +35,16 @@ export interface PostsState {
     loading: boolean;
     error: string;
   };
+  retweet: {
+    complete: boolean;
+    loading: boolean;
+    error: string;
+  };
+  remove: {
+    complete: boolean;
+    loading: boolean;
+    error: string;
+  };
 }
 
 export const initialState: PostsState = {
@@ -69,6 +79,16 @@ export const initialState: PostsState = {
     loading: false,
     error: '',
   },
+  retweet: {
+    complete: false,
+    loading: false,
+    error: '',
+  },
+  remove: {
+    complete: false,
+    loading: false,
+    error: '',
+  },
 };
 
 export default createReducer(initialState)
@@ -99,8 +119,8 @@ export default createReducer(initialState)
     produce(state, (draft) => {
       draft.removeImage.complete = true;
       draft.removeImage.loading = false;
-      const idx = draft.uploaded.data.findIndex((path) => path === action.payload.path);
-      if (idx && draft.uploaded.data) {
+      const idx = (draft.uploaded.data || []).findIndex((path) => path === action.payload.path);
+      if (idx >= 0 && draft.uploaded.data) {
         draft.uploaded.data.splice(idx, 1);
       }
     })
@@ -159,4 +179,68 @@ export default createReducer(initialState)
         draft.mainPosts.loading = false;
         draft.mainPosts.error = action.payload;
       })
+  )
+  .handleAction(postActions.retweet.request, (state) =>
+    produce(state, (draft) => {
+      draft.retweet.complete = false;
+      draft.retweet.loading = true;
+      draft.retweet.error = '';
+    })
+  )
+  .handleAction(postActions.retweet.success, (state, action) =>
+    produce(state, (draft) => {
+      draft.retweet.complete = true;
+      draft.mainPosts.data?.unshift(action.payload);
+      draft.retweet.loading = false;
+    })
+  )
+  .handleAction(postActions.retweet.failure, (state, action) =>
+    produce(state, (draft) => {
+      draft.retweet.error = action.payload;
+      draft.retweet.loading = false;
+    })
+  )
+  .handleAction(postActions.removePost.request, (state) =>
+    produce(state, (draft) => {
+      draft.remove.complete = false;
+      draft.remove.loading = true;
+      draft.remove.error = '';
+    })
+  )
+  .handleAction(postActions.removePost.success, (state, action) =>
+    produce(state, (draft) => {
+      draft.remove.complete = true;
+      const index = draft.mainPosts.data?.findIndex((post) => post.id === action.payload);
+      if (index != null && index >= 0) {
+        draft.mainPosts.data?.splice(index, 1);
+      }
+      draft.remove.loading = false;
+    })
+  )
+  .handleAction(postActions.removePost.failure, (state, action) =>
+    produce(state, (draft) => {
+      draft.remove.error = action.payload;
+      draft.remove.loading = false;
+    })
+  )
+  .handleAction(postActions.likePost.success, (state, action) =>
+    produce(state, (draft) => {
+      const targetIndex = (draft.mainPosts.data || []).findIndex((post) => post.id === action.payload.postId);
+      const targetPost = draft.mainPosts.data?.[targetIndex];
+      if (targetPost) {
+        targetPost.likers.unshift({ id: action.payload.userId });
+      }
+    })
+  )
+  .handleAction(postActions.unlikePost.success, (state, action) =>
+    produce(state, (draft) => {
+      const targetIndex = (draft.mainPosts.data || []).findIndex((post) => post.id === action.payload.postId);
+      const targetPost = draft.mainPosts.data?.[targetIndex];
+      if (targetPost) {
+        const likedIndex = (targetPost.likers || []).findIndex((liker) => liker.id === action.payload.userId);
+        if (likedIndex >= 0) {
+          targetPost.likers.splice(likedIndex, 1);
+        }
+      }
+    })
   );

@@ -11,6 +11,7 @@ import { userActions } from '../../store/actions/users';
 import FollowButton from '../user/FollowButton';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
+import { postActions } from '../../store/actions/posts';
 
 const cardWrapperStyle = css`
   margin-bottom: 1rem;
@@ -31,12 +32,24 @@ function PostCard({ post }: PostCardProps) {
   const liked = post.likers?.find((liker) => liker.id === id);
 
   const handleRetweet = useCallback(() => {
-    console.log('handle Retweet');
-  }, []);
+    if (!id) {
+      alert('로그인이 필요합니다');
+      return;
+    }
+
+    dispatch(postActions.retweet.request(post.id));
+  }, [id, post?.id]);
 
   const toggleLike = useCallback(() => {
     if (!id) {
       alert('로그인이 필요합니다');
+      return;
+    }
+
+    if (liked) {
+      dispatch(postActions.unlikePost.request(post.id));
+    } else {
+      dispatch(postActions.likePost.request(post.id));
     }
   }, [id, post?.id, liked]);
 
@@ -44,6 +57,7 @@ function PostCard({ post }: PostCardProps) {
     setCommentFormOpened((prev) => !prev);
 
     if (!commentFormOpened) {
+      dispatch(postActions.loadComment.request(post.id));
     }
   }, []);
 
@@ -61,7 +75,9 @@ function PostCard({ post }: PostCardProps) {
     []
   );
 
-  const handleRemovePost = useCallback((postId: number) => () => {}, []);
+  const handleRemovePost = useCallback(() => {
+    dispatch(postActions.removePost.request(post.id));
+  }, []);
 
   return (
     <div css={[cardWrapperStyle]}>
@@ -82,7 +98,7 @@ function PostCard({ post }: PostCardProps) {
                 {id && post.user.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button danger onClick={handleRemovePost(post.id)}>
+                    <Button danger onClick={handleRemovePost}>
                       삭제
                     </Button>
                   </>
