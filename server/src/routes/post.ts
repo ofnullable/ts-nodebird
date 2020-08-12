@@ -165,7 +165,11 @@ router.delete('/:id', isLogin, async (req, res, next) => {
 
 router.get('/:id/comments', async (req, res, next) => {
   try {
-    const lastId = Number(req.query.lastId);
+    const post = await Post.findOne({ where: { id: req.params.id } });
+
+    if (!post) {
+      return res.status(404).send('포스트가 존재하지 않습니다.');
+    }
 
     const comments = await Comment.findAll({
       where: {
@@ -179,9 +183,11 @@ router.get('/:id/comments', async (req, res, next) => {
       ],
       order: [['createdAt', 'ASC']],
     });
+
+    return res.json(comments);
   } catch (e) {
     console.error(e);
-    next(e);
+    return next(e);
   }
 });
 
@@ -233,7 +239,7 @@ router.post('/:id/like', isLogin, async (req, res, next) => {
     }
 
     await post.addLiker(req.user!.id);
-    res.json({ userId: req.user!.id });
+    res.send(req.user!.id);
   } catch (e) {
     console.error(e);
     next(e);
