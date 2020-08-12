@@ -78,5 +78,5 @@ export const userActions = {
   )<string, void, string>(),
 
   addPost: createAction(users.ADD_POST)(),
-  removePost: createAction(users.REMOVE_POST)(),
+  removePost: createAction(users.REMOVE_POST)<number>(),
 };

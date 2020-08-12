@@ -3,12 +3,17 @@ import { postActions } from '../actions/posts';
 import { getFailureMessage } from '../../utils/redux';
 import {
   addPostApi,
+  likePostApi,
   loadHashtagPostsApi,
   loadMainPostsApi,
   loadUserPostsApi,
   removeImageApi,
+  removePostApi,
+  retweetApi,
+  unlikePostApi,
   uploadImageApi,
 } from '../../api/posts';
+import { userActions } from '../actions/users';
 
 function* uploadImage({ payload }: ReturnType<typeof postActions.uploadImages.request>) {
   try {
@@ -94,6 +99,63 @@ function* watchLoadUserPosts() {
   yield takeLatest(postActions.loadUserPosts.request, loadUserPosts);
 }
 
+function* likePost({ payload: postId }: ReturnType<typeof postActions.likePost.request>) {
+  try {
+    const { data } = yield call(likePostApi, postId);
+    yield put(postActions.likePost.success({ userId: data, postId }));
+  } catch (e) {
+    console.error(e);
+    yield put(postActions.likePost.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchLikePost() {
+  yield takeLatest(postActions.likePost.request, likePost);
+}
+
+function* unlikePost({ payload: postId }: ReturnType<typeof postActions.unlikePost.request>) {
+  try {
+    const { data } = yield call(unlikePostApi, postId);
+    yield put(postActions.unlikePost.success({ userId: data.userId, postId }));
+  } catch (e) {
+    console.error(e);
+    yield put(postActions.unlikePost.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchUnlikePost() {
+  yield takeLatest(postActions.unlikePost.request, unlikePost);
+}
+
+function* removePost({ payload: postId }: ReturnType<typeof postActions.removePost.request>) {
+  try {
+    const { data } = yield call(removePostApi, postId);
+    yield put(postActions.removePost.success(data));
+    yield put(userActions.removePost(data));
+  } catch (e) {
+    console.error(e);
+    yield put(postActions.removePost.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchRemovePost() {
+  yield takeLatest(postActions.removePost.request, removePost);
+}
+
+function* retweet({ payload: postId }: ReturnType<typeof postActions.retweet.request>) {
+  try {
+    const { data } = yield call(retweetApi, postId);
+    yield put(postActions.retweet.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(postActions.retweet.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchRetweetPost() {
+  yield takeLatest(postActions.retweet.request, retweet);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchUploadImage),
@@ -102,5 +164,9 @@ export default function* postSaga() {
     fork(watchLoadMainPosts),
     fork(watchLoadHashtagPosts),
     fork(watchLoadUserPosts),
+    fork(watchLikePost),
+    fork(watchUnlikePost),
+    fork(watchRemovePost),
+    fork(watchRetweetPost),
   ]);
 }

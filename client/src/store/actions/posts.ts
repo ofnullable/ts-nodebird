@@ -56,19 +56,19 @@ export const postActions = {
   >(),
 
   likePost: createAsyncAction(posts.LIKE_POST.REQUEST, posts.LIKE_POST.SUCCESS, posts.LIKE_POST.FAILURE)<
-    void,
-    void,
+    number,
+    { postId: number; userId: number },
     string
   >(),
 
   unlikePost: createAsyncAction(posts.UNLIKE_POST.REQUEST, posts.UNLIKE_POST.SUCCESS, posts.UNLIKE_POST.FAILURE)<
-    void,
-    void,
+    number,
+    { postId: number; userId: number },
     string
   >(),
 
   loadComment: createAsyncAction(posts.LOAD_COMMENTS.REQUEST, posts.LOAD_COMMENTS.SUCCESS, posts.LOAD_COMMENTS.FAILURE)<
-    void,
+    number,
     void,
     string
   >(),
@@ -79,11 +79,15 @@ export const postActions = {
     string
   >(),
 
-  retweet: createAsyncAction(posts.RETWEET.REQUEST, posts.RETWEET.SUCCESS, posts.RETWEET.FAILURE)<void, void, string>(),
+  retweet: createAsyncAction(posts.RETWEET.REQUEST, posts.RETWEET.SUCCESS, posts.RETWEET.FAILURE)<
+    number,
+    Post,
+    string
+  >(),
 
   removePost: createAsyncAction(posts.REMOVE_POST.REQUEST, posts.REMOVE_POST.SUCCESS, posts.REMOVE_POST.FAILURE)<
-    void,
-    void,
+    number,
+    number,
     string
   >(),
 

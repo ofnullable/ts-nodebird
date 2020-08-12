@@ -1,10 +1,10 @@
 export interface User {
-  id: 1;
+  id: number;
   email: string;
   nickname: string;
   createdAt: Date;
   updatedAt: Date;
-  posts: unknown[];
+  posts: Post[];
   followers?: User[];
   followings?: User[];
 }
@@ -25,7 +25,7 @@ export interface Post {
   images?: { src: string }[];
   content: string;
   user: User;
-  likers?: User[];
+  likers: { id: number }[];
   retweetId?: number;
   retweet?: Post;
   createdAt: Date;
