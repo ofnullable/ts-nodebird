@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import { Button, Card, List } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
-import { User } from '../../store/interfaces';
+import { FollowUser } from '../../store/interfaces';
 
 interface FollowListProps {
   header: string;
   hasMore: boolean;
   handleLoadMore: () => void;
-  data: User[] | undefined;
+  data: FollowUser[] | undefined;
   handleStopFollow: (id: number) => () => void;
 }
 

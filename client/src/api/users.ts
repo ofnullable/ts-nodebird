@@ -29,3 +29,19 @@ export const loadFollowersApi = ({ userId, limit = 3, offset = 0 }: FollowParams
 export const loadFollowingsApi = ({ userId, limit = 3, offset = 0 }: FollowParams): AxiosPromise => {
   return api.get(`/users/${userId || 0}/followings?offset=${offset}&limit=${limit}`);
 };
+
+export const followApi = (userId: number): AxiosPromise => {
+  return api.post(`/users/${userId}/follow`);
+};
+
+export const unfollowApi = (userId: number): AxiosPromise => {
+  return api.delete(`/users/${userId}/follow`);
+};
+
+export const removeFollowerApi = (userId: number): AxiosPromise => {
+  return api.delete(`/users/${userId}/follower`);
+};
+
+export const editNicknameApi = (nickname: string): AxiosPromise => {
+  return api.patch('/users/nickname', { nickname });
+};
