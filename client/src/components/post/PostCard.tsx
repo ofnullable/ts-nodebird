@@ -68,7 +68,7 @@ function PostCard({ post }: PostCardProps) {
     []
   );
 
-  const handleUnFollow = useCallback(
+  const handleUnfollow = useCallback(
     (userId: number) => () => {
       dispatch(userActions.unfollow.request(userId));
     },
@@ -112,7 +112,7 @@ function PostCard({ post }: PostCardProps) {
           </Popover>,
         ]}
         title={post.retweetId ? `${post.user.nickname}님이 리트윗하셨습니다.` : null}
-        extra={<FollowButton post={post} handleFollow={handleFollow} handleUnFollow={handleUnFollow} />}
+        extra={<FollowButton post={post} handleFollow={handleFollow} handleUnfollow={handleUnfollow} />}
       >
         {post.retweetId && post.retweet ? (
           <Card>

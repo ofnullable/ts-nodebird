@@ -1,6 +1,6 @@
+import { useCallback } from 'react';
 import { Avatar, Button, Card } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCallback } from 'react';
 import { AppState } from '../../store/reducers';
 import AppLink from '../common/AppLink';
 import { userActions } from '../../store/actions/users';

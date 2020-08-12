@@ -1,6 +1,7 @@
+import Router from 'next/router';
 import { NextPageContext } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Typography } from 'antd';
 import { userActions } from '../store/actions/users';
 import { postActions } from '../store/actions/posts';
@@ -10,11 +11,15 @@ import PostCard from '../components/post/PostCard';
 import FollowList from '../components/user/FollowList';
 
 function ProfilePage() {
-  const { followers, followings } = useSelector((state: AppState) => state.user);
+  const { auth, followers, followings } = useSelector((state: AppState) => state.user);
   const { mainPosts } = useSelector((state: AppState) => state.post);
   const dispatch = useDispatch();
 
-  const handleUnFollow = useCallback(
+  useEffect(() => {
+    if (!auth.info) Router.push('/');
+  }, [auth.info]);
+
+  const handleUnfollow = useCallback(
     (userId: number) => () => {
       dispatch(userActions.unfollow.request(userId));
     },
@@ -36,6 +41,9 @@ function ProfilePage() {
     dispatch(userActions.loadFollowers.request({ offset: followers.data?.length }));
   }, [followers.data?.length]);
 
+  if (!auth.info) {
+    return null;
+  }
   return (
     <>
       <NicknameEditForm />
@@ -47,7 +55,7 @@ function ProfilePage() {
             hasMore={followings.hasMoreFollowings}
             handleLoadMore={loadMoreFollowings}
             data={followings.data}
-            handleStopFollow={handleUnFollow}
+            handleStopFollow={handleUnfollow}
           />
         ) : (
           <p>You haven&apos;t followed anyone yet!</p>

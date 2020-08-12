@@ -1,5 +1,5 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
-import { JoinParams, SignInParams, User } from '../interfaces';
+import { FollowUser, JoinParams, SignInParams, User } from '../interfaces';
 import { asyncActionCreator } from '../../utils/redux';
 
 export const users = {
@@ -45,11 +45,11 @@ export const userActions = {
     users.LOAD_USER_INFO.FAILURE
   )<number, User, string>(),
 
-  follow: createAsyncAction(users.FOLLOW.REQUEST, users.FOLLOW.SUCCESS, users.FOLLOW.FAILURE)<number, void, string>(),
+  follow: createAsyncAction(users.FOLLOW.REQUEST, users.FOLLOW.SUCCESS, users.FOLLOW.FAILURE)<number, number, string>(),
 
   unfollow: createAsyncAction(users.UNFOLLOW.REQUEST, users.UNFOLLOW.SUCCESS, users.UNFOLLOW.FAILURE)<
     number,
-    void,
+    number,
     string
   >(),
 
@@ -57,25 +57,25 @@ export const userActions = {
     users.LOAD_FOLLOWERS.REQUEST,
     users.LOAD_FOLLOWERS.SUCCESS,
     users.LOAD_FOLLOWERS.FAILURE
-  )<{ userId?: number; limit?: number; offset?: number }, void, string>(),
+  )<{ userId?: number; limit?: number; offset?: number }, FollowUser[], string>(),
 
   loadFollowings: createAsyncAction(
     users.LOAD_FOLLOWINGS.REQUEST,
     users.LOAD_FOLLOWINGS.SUCCESS,
     users.LOAD_FOLLOWINGS.FAILURE
-  )<{ userId?: number; limit?: number; offset?: number }, void, string>(),
+  )<{ userId?: number; limit?: number; offset?: number }, FollowUser[], string>(),
 
   removeFollower: createAsyncAction(
     users.REMOVE_FOLLOWER.REQUEST,
     users.REMOVE_FOLLOWER.SUCCESS,
     users.REMOVE_FOLLOWER.FAILURE
-  )<number, void, string>(),
+  )<number, number, string>(),
 
   editNickname: createAsyncAction(
     users.EDIT_NICKNAME.REQUEST,
     users.EDIT_NICKNAME.SUCCESS,
     users.EDIT_NICKNAME.FAILURE
-  )<string, void, string>(),
+  )<string, string, string>(),
 
   addPost: createAction(users.ADD_POST)(),
   removePost: createAction(users.REMOVE_POST)<number>(),

@@ -5,8 +5,13 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   posts: Post[];
-  followers?: User[];
-  followings?: User[];
+  followers: FollowUser[];
+  followings: FollowUser[];
+}
+
+export interface FollowUser {
+  id: number;
+  nickname?: string;
 }
 
 export interface SignInParams {

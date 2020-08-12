@@ -1,13 +1,17 @@
 import { takeLatest, call, put, all, fork } from 'redux-saga/effects';
 import { userActions } from '../actions/users';
 import {
+  editNicknameApi,
+  followApi,
   joinApi,
   loadFollowersApi,
   loadFollowingsApi,
   loadMyInfoApi,
   loadUserInfoApi,
+  removeFollowerApi,
   signInApi,
   signOutApi,
+  unfollowApi,
 } from '../../api/users';
 import { getFailureMessage } from '../../utils/redux';
 
@@ -109,6 +113,62 @@ function* watchLoadFollowings() {
   yield takeLatest(userActions.loadFollowings.request, loadFollowings);
 }
 
+function* follow({ payload }: ReturnType<typeof userActions.follow.request>) {
+  try {
+    const { data } = yield call(followApi, payload);
+    yield put(userActions.follow.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(userActions.follow.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchFollow() {
+  yield takeLatest(userActions.follow.request, follow);
+}
+
+function* unfollow({ payload }: ReturnType<typeof userActions.unfollow.request>) {
+  try {
+    const { data } = yield call(unfollowApi, payload);
+    yield put(userActions.unfollow.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(userActions.unfollow.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchUnfollow() {
+  yield takeLatest(userActions.unfollow.request, unfollow);
+}
+
+function* removeFollower({ payload }: ReturnType<typeof userActions.removeFollower.request>) {
+  try {
+    const { data } = yield call(removeFollowerApi, payload);
+    yield put(userActions.removeFollower.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(userActions.removeFollower.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchRemoveFollower() {
+  yield takeLatest(userActions.removeFollower.request, removeFollower);
+}
+
+function* editNickname({ payload }: ReturnType<typeof userActions.editNickname.request>) {
+  try {
+    const { data } = yield call(editNicknameApi, payload);
+    yield put(userActions.editNickname.success(data));
+  } catch (e) {
+    console.error(e);
+    yield put(userActions.editNickname.failure(getFailureMessage(e)));
+  }
+}
+
+function* watchEditNickname() {
+  yield takeLatest(userActions.editNickname.request, editNickname);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchJoin),
@@ -118,5 +178,9 @@ export default function* userSaga() {
     fork(watchLoadUserInfo),
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
+    fork(watchFollow),
+    fork(watchUnfollow),
+    fork(watchRemoveFollower),
+    fork(watchEditNickname),
   ]);
 }

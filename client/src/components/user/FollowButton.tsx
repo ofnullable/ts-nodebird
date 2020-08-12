@@ -7,10 +7,10 @@ import { AppState } from '../../store/reducers';
 interface FollowButtonProps {
   post: Post;
   handleFollow: (id: number) => () => void;
-  handleUnFollow: (id: number) => () => void;
+  handleUnfollow: (id: number) => () => void;
 }
 
-function FollowButton({ post, handleFollow, handleUnFollow }: FollowButtonProps) {
+function FollowButton({ post, handleFollow, handleUnfollow }: FollowButtonProps) {
   const { info } = useSelector((state: AppState) => state.user.auth);
 
   if (post.user.id === info?.id) {
@@ -19,7 +19,7 @@ function FollowButton({ post, handleFollow, handleUnFollow }: FollowButtonProps)
 
   const isFollowed = info?.followings?.find((user) => user.id === post.user.id);
   return isFollowed ? (
-    <Button onClick={handleUnFollow(post.user.id)}>Unfollow</Button>
+    <Button onClick={handleUnfollow(post.user.id)}>Unfollow</Button>
   ) : (
     <Button onClick={handleFollow(post.user.id)}>Follow</Button>
   );
